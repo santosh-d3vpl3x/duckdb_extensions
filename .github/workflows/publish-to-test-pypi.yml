@@ -1,0 +1,47 @@
+name: Publish duckdb_extensions 🐍 distribution 📦 to PyPI and TestPyPI
+on: push
+
+jobs:
+  build:
+    name: Build duckdb_extensions 📦
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install uv
+      run: |
+        sudo apt update
+        sudo apt install -y curl unzip
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+    - name: Install python
+      run: uv venv
+    - name: build duckdb_extensions wheel
+      run: uv tool run hatch build -t wheel
+    - name: Store the distribution packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: duckdb-extensions-distributions
+        path: dist/*.whl
+  publish-to-testpypi:
+    name: Publish 🦆 duckdb_extensions 🐍 distribution 📦 to TestPyPI
+    needs:
+      - build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/duckdb-extensions
+
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+
+    steps:
+      - name: Download all the dists
+        uses: actions/download-artifact@v4
+        with:
+          name: duckdb-extensions-distributions
+          path: dist/
+      - name: Publish distribution 📦 to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/

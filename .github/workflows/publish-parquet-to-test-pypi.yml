@@ -1,0 +1,57 @@
+name: Publish 🦆duckdb_extension_parquet 🐍📦 to PyPI and TestPyPI
+on: push
+
+jobs:
+  build:
+    name: Build duckdb_extension_parquet 📦
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install uv
+      run: |
+        sudo apt update
+        sudo apt install -y curl unzip
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+    - name: Install python
+      run: uv venv
+    - name: build duckdb_extension_parquet for osx_arm64
+      working-directory: ./extensions/duckdb_extension_parquet
+      run: |
+        uv tool run hatch build -t wheel osx_arm64
+    - name: build duckdb_extension_parquet for linux_amd64
+      working-directory: ./extensions/duckdb_extension_parquet
+      run: |
+        uv tool run hatch build -t wheel linux_amd64
+    - name: Copy wheels to dist directory
+      run: |
+        mkdir dist
+        cp extensions/*/*/*.whl dist
+    - name: Store the distribution packages
+      uses: actions/upload-artifact@v4
+      with:
+        name: duckdb-extension-parquet-distributions
+        path: dist/*.whl
+  publish-to-testpypi:
+    name: Publish 🦆duckdb_extension_parquet 🐍📦 to TestPyPI
+    needs:
+      - build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/p/duckdb-extensions
+
+    permissions:
+      id-token: write  # IMPORTANT: mandatory for trusted publishing
+
+    steps:
+      - name: Download all the dists
+        uses: actions/download-artifact@v4
+        with:
+          name: duckdb-extension-parquet-distributions
+          path: dist/
+      - name: Publish distribution 📦 to TestPyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/

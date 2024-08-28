@@ -1,0 +1,5 @@
+**.whl
+**.duckdb_extension.gz
+**.duckdb_extension
+/.venv/
+/.idea/
