@@ -1,4 +1,4 @@
-name: Publish duckdb_extensions 🐍 distribution 📦 to PyPI and TestPyPI
+name: Publish duckdb_extensions 🐍 distribution 📦 to PyPI
 on: push
 
 jobs:
