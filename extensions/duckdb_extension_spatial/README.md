@@ -1,7 +1,7 @@
 # 🦆DuckDB spatial extension as python package
 
-[![PyPI - Version](https://img.shields.io/pypi/v/duckdb-extensions-spatial.svg)](https://pypi.org/project/duckdb-extensions-spatial)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckdb-extensions-spatial.svg)](https://pypi.org/project/duckdb-extensions-spatial)
+[![PyPI - Version](https://img.shields.io/pypi/v/duckdb-extension-spatial.svg)](https://pypi.org/project/duckdb-extension-spatial)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckdb-extension-spatial.svg)](https://pypi.org/project/duckdb-extension-spatial)
 
 -----
 
@@ -35,4 +35,4 @@ print(
 
 ## License
 
-`duckdb-extensions-spatial` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+`duckdb-extension-spatial` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.

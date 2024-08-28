@@ -1,7 +1,7 @@
-# 🦆DuckDB Parquet extension as python package
+# 🦆DuckDB parquet extension as python package
 
-[![PyPI - Version](https://img.shields.io/pypi/v/duckdb-extensions-parquet.svg)](https://pypi.org/project/duckdb-extensions-parquet)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckdb-extensions-parquet.svg)](https://pypi.org/project/duckdb-extensions-parquet)
+[![PyPI - Version](https://img.shields.io/pypi/v/duckdb-extension-parquet.svg)](https://pypi.org/project/duckdb-extension-parquet)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckdb-extension-parquet.svg)](https://pypi.org/project/duckdb-extension-parquet)
 
 -----
 
@@ -35,4 +35,4 @@ print(
 
 ## License
 
-`duckdb-extensions-parquet` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+`duckdb-extension-parquet` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.

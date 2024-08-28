@@ -1,7 +1,7 @@
 # 🦆DuckDB HTTPFS extension as python package
 
-[![PyPI - Version](https://img.shields.io/pypi/v/duckdb-extensions-httpfs.svg)](https://pypi.org/project/duckdb-extensions-httpfs)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckdb-extensions-httpfs.svg)](https://pypi.org/project/duckdb-extensions-httpfs)
+[![PyPI - Version](https://img.shields.io/pypi/v/duckdb-extension-httpfs.svg)](https://pypi.org/project/duckdb-extension-httpfs)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckdb-extension-httpfs.svg)](https://pypi.org/project/duckdb-extension-httpfs)
 
 -----
 
@@ -35,4 +35,4 @@ print(
 
 ## License
 
-`duckdb-extensions-httpfs` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+`duckdb-extension-httpfs` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
