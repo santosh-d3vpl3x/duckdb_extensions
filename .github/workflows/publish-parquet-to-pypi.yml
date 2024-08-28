@@ -1,4 +1,4 @@
-name: Publish 🦆duckdb_extension_parquet 🐍📦 to PyPI and TestPyPI
+name: Publish 🦆duckdb_extension_parquet 🐍📦 to PyPI
 on: push
 
 jobs:
@@ -32,18 +32,19 @@ jobs:
       with:
         name: duckdb-extension-parquet-distributions
         path: dist/*.whl
-  publish-to-testpypi:
-    name: Publish 🦆duckdb_extension_parquet 🐍📦 to TestPyPI
+  publish-to-pypi:
+    name: Publish 🦆duckdb_extension_parquet 🐍📦 to PyPI
+    if: startsWith(github.ref, 'refs/tags/')
     needs:
       - build
     runs-on: ubuntu-latest
 
     environment:
-      name: testpypi
-      url: https://test.pypi.org/p/duckdb-extensions
+      name: pypi
+      url: https://pypi.org/p/duckdb-extension-parquet
 
     permissions:
-      id-token: write  # IMPORTANT: mandatory for trusted publishing
+      id-token: write
 
     steps:
       - name: Download all the dists
@@ -51,7 +52,5 @@ jobs:
         with:
           name: duckdb-extension-parquet-distributions
           path: dist/
-      - name: Publish distribution 📦 to TestPyPI
+      - name: Publish distribution 📦 to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/

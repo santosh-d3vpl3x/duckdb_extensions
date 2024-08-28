@@ -14,11 +14,7 @@
 ## Installation
 First install `duckdb-extensions`.
 ```console
-pip install duckdb-extensions
-```
-Then one of the extensions.
-```console
-pip install duckdb-extension-parquet
+pip install duckdb-extensions duckdb-extension-parquet
 ```
 You are ready to install the extension for duckdb.
 ```python

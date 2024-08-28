@@ -14,11 +14,7 @@
 ## Installation
 First install `duckdb-extensions`.
 ```console
-pip install duckdb-extensions
-```
-Then one of the extensions.
-```console
-pip install duckdb-extension-httpfs
+pip install duckdb-extensions duckdb-extension-httpfs
 ```
 You are ready to install the extension for duckdb.
 ```python

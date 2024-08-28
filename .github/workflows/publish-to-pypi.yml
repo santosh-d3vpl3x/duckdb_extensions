@@ -22,18 +22,18 @@ jobs:
       with:
         name: duckdb-extensions-distributions
         path: dist/*.whl
-  publish-to-testpypi:
-    name: Publish 🦆 duckdb_extensions 🐍 distribution 📦 to TestPyPI
+  publish-to-pypi:
+    name: Publish 🦆 duckdb_extensions 🐍 distribution 📦 to PyPI
     needs:
       - build
     runs-on: ubuntu-latest
 
     environment:
-      name: testpypi
-      url: https://test.pypi.org/p/duckdb-extensions
+      name: pypi
+      url: https://pypi.org/p/duckdb-extensions
 
     permissions:
-      id-token: write  # IMPORTANT: mandatory for trusted publishing
+      id-token: write
 
     steps:
       - name: Download all the dists
@@ -41,7 +41,5 @@ jobs:
         with:
           name: duckdb-extensions-distributions
           path: dist/
-      - name: Publish distribution 📦 to TestPyPI
+      - name: Publish distribution 📦 to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          repository-url: https://test.pypi.org/legacy/
