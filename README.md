@@ -10,6 +10,10 @@
 - [Installation](#installation)
 - [License](#license)
 
+## Available extensions
+- duckdb-extension-httpfs
+- duckdb-extension-spatial
+- duckdb-extension-parquet
 
 ## Installation
 First install `duckdb-extensions`.
