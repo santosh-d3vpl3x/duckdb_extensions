@@ -1,7 +1,7 @@
 # duckdb_extensions
 
-[![PyPI - Version](https://img.shields.io/pypi/v/duckdb-extensions-parquet.svg)](https://pypi.org/project/duckdb-extensions-parquet)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckdb-extensions-parquet.svg)](https://pypi.org/project/duckdb-extensions-parquet)
+[![PyPI - Version](https://img.shields.io/pypi/v/duckdb-extensions.svg)](https://pypi.org/project/duckdb-extensions)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckdb-extensions.svg)](https://pypi.org/project/duckdb-extensions)
 
 -----
 
