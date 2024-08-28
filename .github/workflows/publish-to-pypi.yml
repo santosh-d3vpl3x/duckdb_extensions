@@ -24,6 +24,7 @@ jobs:
         path: dist/*.whl
   publish-to-pypi:
     name: Publish 🦆 duckdb_extensions 🐍 distribution 📦 to PyPI
+    if: startsWith(github.ref, 'refs/tags/')
     needs:
       - build
     runs-on: ubuntu-latest
