@@ -96,7 +96,7 @@ jobs:
     name: Publish 🦆duckdb_extension_parquet 🐍📦 to PyPI
     if: startsWith(github.ref, 'refs/tags/')
     needs:
-      - build
+      - test
     runs-on: ubuntu-latest
 
     environment:

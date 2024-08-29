@@ -156,7 +156,7 @@ wheels = [
 
 [[package]]
 name = "duckdb-extension-httpfs"
-version = "1.0.0"
+version = "1.0.1"
 source = { editable = "extensions/duckdb_extension_httpfs" }
 dependencies = [
     { name = "duckdb" },
@@ -173,7 +173,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-parquet"
-version = "1.0.0"
+version = "1.0.1"
 source = { editable = "extensions/duckdb_extension_parquet" }
 dependencies = [
     { name = "duckdb" },
@@ -190,7 +190,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-spatial"
-version = "1.0.0"
+version = "1.0.1"
 source = { editable = "extensions/duckdb_extension_spatial" }
 dependencies = [
     { name = "duckdb" },
@@ -207,7 +207,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extensions"
-version = "1.0.0"
+version = "1.0.1"
 source = { editable = "." }
 dependencies = [
     { name = "duckdb" },

@@ -22,6 +22,8 @@
 - osx_amd64
 - windows_amd64
 
+Compatible with duckdb==1.0.0
+
 ## Installation
 First install `duckdb-extensions`.
 ```console

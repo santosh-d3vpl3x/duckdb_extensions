@@ -1,7 +1,7 @@
 [project]
 name = "duckdb_extensions"
 description = "DuckDB extensions as python package"
-version = "1.0.0"
+version = "1.0.1"
 readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
