@@ -53,13 +53,13 @@ jobs:
       - build
     strategy:
       matrix:
-        spec:
-          - { os: macos-latest, platform: macos, arch: x64 }
-          - { os: macos-latest, platform: macos, arch: arm64 }
-          - { os: ubuntu-latest, platform: linux, arch: x64 }
-          - { os: ubuntu-latest, platform: linux, arch: aarch64 }
-          - { os: windows-latest, platform: windows, arch: x64 }
-    runs-on: ${{ matrix.spec.os }}
+        os:
+          - ubuntu-latest
+          - arm-ubuntu-22.04
+          - windows-latest
+          - macos-latest
+          - macos-13
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - name: Install Act dependencies
