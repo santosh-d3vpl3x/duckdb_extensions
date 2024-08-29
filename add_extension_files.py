@@ -27,14 +27,20 @@ class CustomBuildHook(BuildHookInterface):
         file_path = download_dir / duckdb_version / duckdb_arch
         for file in file_path.glob("*.duckdb_extension.gz"):
             root_name = self.metadata.name.replace("-", "_")
-            build_data["force_include"][file] = f"{root_name}/extensions/{duckdb_version}/{duckdb_arch}/{file.name}"
+            build_data["force_include"][file] = f"{root_name}/extensions/{duckdb_version}/{file.name}"
 
     @staticmethod
     def add_tag(build_data, duckdb_arch):
-        if duckdb_arch == "linux_amd64":
+        if duckdb_arch == "linux_amd64_gcc4":
             build_data["tag"] = "py3-none-manylinux2014_x86_64"
+        elif duckdb_arch == "linux_arm64":
+            build_data["tag"] = "py3-none-manylinux2014_aarch64"
         elif duckdb_arch == "osx_arm64":
             build_data["tag"] = "py3-none-macosx_11_0_arm64"
+        elif duckdb_arch == "osx_amd64":
+            build_data["tag"] = "py3-none-macosx_11_0_x86_64"
+        elif duckdb_arch == "windows_amd64":
+            build_data["tag"] = "py3-none-win_amd64"
         else:
             raise Exception("Not supported platform")
 

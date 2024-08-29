@@ -16,8 +16,11 @@
 - duckdb-extension-parquet
 
 **The architectures supported:**
-- linux_amd64
+- linux_amd64_gcc4
+- linux_arm64
 - osx_arm64
+- osx_amd64
+- windows_amd64
 
 ## Installation
 First install `duckdb-extensions`.
