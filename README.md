@@ -17,7 +17,6 @@
 
 **The architectures supported:**
 - linux_amd64_gcc4
-- linux_arm64
 - osx_arm64
 - osx_amd64
 - windows_amd64
