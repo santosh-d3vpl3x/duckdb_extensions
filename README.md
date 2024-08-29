@@ -1,4 +1,4 @@
-# duckdb_extensions
+# DuckDB extensions on pypi
 
 [![PyPI - Version](https://img.shields.io/pypi/v/duckdb-extensions.svg)](https://pypi.org/project/duckdb-extensions)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckdb-extensions.svg)](https://pypi.org/project/duckdb-extensions)
@@ -11,11 +11,11 @@
 - [License](#license)
 
 ## Available extensions
-Following extensions are currently published to pypi
 - duckdb-extension-httpfs
 - duckdb-extension-spatial
 - duckdb-extension-parquet
-The architectures supported:
+
+**The architectures supported:**
 - linux_amd64
 - osx_arm64
 
