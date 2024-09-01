@@ -12,7 +12,6 @@
 
 
 ## Installation
-First install `duckdb-extensions`.
 ```console
 pip install duckdb-extensions duckdb-extension-httpfs
 ```

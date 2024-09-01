@@ -11,11 +11,24 @@
 - [License](#license)
 
 ## Available extensions
-- `duckdb-extension-httpfs`
-- `duckdb-extension-spatial`
-- `duckdb-extension-parquet`
-- `duckdb-extension-delta`
-- `duckdb-extension-postgres` or `duckdb-extension-postgres-scanner`
+- [duckdb_extension_arrow](extensions/duckdb_extension_arrow)
+- [duckdb_extension_autocomplete](extensions/duckdb_extension_autocomplete)
+- [duckdb_extension_aws](extensions/duckdb_extension_aws)
+- [duckdb_extension_azure](extensions/duckdb_extension_azure)
+- [duckdb_extension_delta](extensions/duckdb_extension_delta)
+- [duckdb_extension_excel](extensions/duckdb_extension_excel)
+- [duckdb_extension_httpfs](extensions/duckdb_extension_httpfs)
+- [duckdb_extension_iceberg](extensions/duckdb_extension_iceberg)
+- [duckdb_extension_inet](extensions/duckdb_extension_inet)
+- [duckdb_extension_motherduck](extensions/duckdb_extension_motherduck)
+- [duckdb_extension_mysql_scanner](extensions/duckdb_extension_mysql_scanner)
+- [duckdb_extension_parquet](extensions/duckdb_extension_parquet)
+- [duckdb_extension_postgres](extensions/duckdb_extension_postgres)
+- [duckdb_extension_postgres_scanner](extensions/duckdb_extension_postgres_scanner)
+- [duckdb_extension_spatial](extensions/duckdb_extension_spatial)
+- [duckdb_extension_sqlite_scanner](extensions/duckdb_extension_sqlite_scanner)
+- [duckdb_extension_substrait](extensions/duckdb_extension_substrait)
+- [duckdb_extension_vss](extensions/duckdb_extension_vss)
 
 **The architectures supported:**
 - `linux_amd64_gcc4`
@@ -24,6 +37,9 @@
 - `windows_amd64`
 
 Compatible with `duckdb==1.0.0`
+
+Note:
+- No `windows_amd64` for `duckdb_extension_substrait`
 
 ## Installation
 First install `duckdb-extensions`.

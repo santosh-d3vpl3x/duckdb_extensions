@@ -12,9 +12,8 @@
 
 
 ## Installation
-First install `duckdb-extensions`.
 ```console
-pip install duckdb-extensions duckdb-extension-{@cookiecutter.extension_name@}
+pip install duckdb-extensions duckdb-extension-{@cookiecutter.extension_name | replace("_","-")@}
 ```
 You are ready to install the extension for duckdb.
 ```python
@@ -28,11 +27,13 @@ import duckdb
 
 print(
     duckdb.sql("""SELECT installed
-                FROM duckdb_extensions() where extension_name='{@cookiecutter.extension_name@}'""")
+                FROM duckdb_extensions() where 
+                extension_name='{@cookiecutter.extension_name@}' or 
+                list_contains(aliases, '{@cookiecutter.extension_name@}')""")
     .fetchone()[0]
 )
 ```
 
 ## License
 
-`duckdb-extension-{@cookiecutter.extension_name@}` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+`duckdb-extension-{@cookiecutter.extension_name | replace("_","-") @}` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
