@@ -159,7 +159,7 @@ wheels = [
 
 [[package]]
 name = "duckdb-extension-delta"
-version = "1.0.1"
+version = "1.0.2"
 source = { editable = "extensions/duckdb_extension_delta" }
 dependencies = [
     { name = "duckdb" },
@@ -176,7 +176,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-httpfs"
-version = "1.0.1"
+version = "1.0.2"
 source = { editable = "extensions/duckdb_extension_httpfs" }
 dependencies = [
     { name = "duckdb" },
@@ -193,7 +193,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-parquet"
-version = "1.0.1"
+version = "1.0.2"
 source = { editable = "extensions/duckdb_extension_parquet" }
 dependencies = [
     { name = "duckdb" },
@@ -210,7 +210,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-postgres"
-version = "1.0.1"
+version = "1.0.2"
 source = { editable = "extensions/duckdb_extension_postgres" }
 dependencies = [
     { name = "duckdb" },
@@ -227,7 +227,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-postgres-scanner"
-version = "1.0.1"
+version = "1.0.2"
 source = { editable = "extensions/duckdb_extension_postgres_scanner" }
 dependencies = [
     { name = "duckdb" },
@@ -244,7 +244,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-spatial"
-version = "1.0.1"
+version = "1.0.2"
 source = { editable = "extensions/duckdb_extension_spatial" }
 dependencies = [
     { name = "duckdb" },
@@ -261,7 +261,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extensions"
-version = "1.0.1"
+version = "1.0.2"
 source = { editable = "." }
 dependencies = [
     { name = "duckdb" },
