@@ -7,8 +7,10 @@ resolution-markers = [
 
 [manifest]
 members = [
+    "duckdb-extension-delta",
     "duckdb-extension-httpfs",
     "duckdb-extension-parquet",
+    "duckdb-extension-postgres",
     "duckdb-extension-postgres-scanner",
     "duckdb-extension-spatial",
     "duckdb-extensions",
@@ -156,6 +158,23 @@ wheels = [
 ]
 
 [[package]]
+name = "duckdb-extension-delta"
+version = "1.0.1"
+source = { editable = "extensions/duckdb_extension_delta" }
+dependencies = [
+    { name = "duckdb" },
+    { name = "importlib-resources", marker = "python_full_version < '3.9'" },
+    { name = "requests" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "duckdb", specifier = ">=1.0.0" },
+    { name = "importlib-resources", marker = "python_full_version < '3.9'", specifier = "==3.0.0" },
+    { name = "requests", specifier = ">=1.0.0" },
+]
+
+[[package]]
 name = "duckdb-extension-httpfs"
 version = "1.0.1"
 source = { editable = "extensions/duckdb_extension_httpfs" }
@@ -176,6 +195,23 @@ requires-dist = [
 name = "duckdb-extension-parquet"
 version = "1.0.1"
 source = { editable = "extensions/duckdb_extension_parquet" }
+dependencies = [
+    { name = "duckdb" },
+    { name = "importlib-resources", marker = "python_full_version < '3.9'" },
+    { name = "requests" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "duckdb", specifier = ">=1.0.0" },
+    { name = "importlib-resources", marker = "python_full_version < '3.9'", specifier = "==3.0.0" },
+    { name = "requests", specifier = ">=1.0.0" },
+]
+
+[[package]]
+name = "duckdb-extension-postgres"
+version = "1.0.1"
+source = { editable = "extensions/duckdb_extension_postgres" }
 dependencies = [
     { name = "duckdb" },
     { name = "importlib-resources", marker = "python_full_version < '3.9'" },
