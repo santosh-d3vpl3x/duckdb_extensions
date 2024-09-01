@@ -1,0 +1,4 @@
+{
+  "extension_name": "postgres",
+  "_jinja2_env_vars": {"variable_start_string": "{@", "variable_end_string": "@}"}
+}

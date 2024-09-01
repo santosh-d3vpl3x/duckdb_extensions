@@ -9,6 +9,7 @@ resolution-markers = [
 members = [
     "duckdb-extension-httpfs",
     "duckdb-extension-parquet",
+    "duckdb-extension-postgres-scanner",
     "duckdb-extension-spatial",
     "duckdb-extensions",
 ]
@@ -175,6 +176,23 @@ requires-dist = [
 name = "duckdb-extension-parquet"
 version = "1.0.1"
 source = { editable = "extensions/duckdb_extension_parquet" }
+dependencies = [
+    { name = "duckdb" },
+    { name = "importlib-resources", marker = "python_full_version < '3.9'" },
+    { name = "requests" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "duckdb", specifier = ">=1.0.0" },
+    { name = "importlib-resources", marker = "python_full_version < '3.9'", specifier = "==3.0.0" },
+    { name = "requests", specifier = ">=1.0.0" },
+]
+
+[[package]]
+name = "duckdb-extension-postgres-scanner"
+version = "1.0.1"
+source = { editable = "extensions/duckdb_extension_postgres_scanner" }
 dependencies = [
     { name = "duckdb" },
     { name = "importlib-resources", marker = "python_full_version < '3.9'" },
