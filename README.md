@@ -11,17 +11,19 @@
 - [License](#license)
 
 ## Available extensions
-- duckdb-extension-httpfs
-- duckdb-extension-spatial
-- duckdb-extension-parquet
+- `duckdb-extension-httpfs`
+- `duckdb-extension-spatial`
+- `duckdb-extension-parquet`
+- `duckdb-extension-delta`
+- `duckdb-extension-postgres` or `duckdb-extension-postgres-scanner`
 
 **The architectures supported:**
-- linux_amd64_gcc4
-- osx_arm64
-- osx_amd64
-- windows_amd64
+- `linux_amd64_gcc4`
+- `osx_arm64`
+- `osx_amd64`
+- `windows_amd64`
 
-Compatible with duckdb==1.0.0
+Compatible with `duckdb==1.0.0`
 
 ## Installation
 First install `duckdb-extensions`.
