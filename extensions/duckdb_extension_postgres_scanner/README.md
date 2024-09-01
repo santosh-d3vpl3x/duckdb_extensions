@@ -1,4 +1,4 @@
-# 🦆DuckDB HTTPFS extension as python package
+# 🦆DuckDB postgres_scanner extension as python package
 
 [![PyPI - Version](https://img.shields.io/pypi/v/duckdb-extension-postgres_scanner.svg)](https://pypi.org/project/duckdb-extension-postgres_scanner)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckdb-extension-postgres_scanner.svg)](https://pypi.org/project/duckdb-extension-postgres_scanner)

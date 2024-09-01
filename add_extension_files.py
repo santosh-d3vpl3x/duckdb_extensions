@@ -25,7 +25,8 @@ class CustomBuildHook(BuildHookInterface):
 
     def include_files(self, build_data, duckdb_arch, duckdb_version, download_dir):
         file_path = download_dir / duckdb_version / duckdb_arch
-        for file in file_path.glob("*.duckdb_extension.gz"):
+        alias = self.metadata.name.replace("-", "_").replace("duckdb_extension_", "")
+        for file in file_path.glob(f"{alias}.duckdb_extension.gz"):
             root_name = self.metadata.name.replace("-", "_")
             build_data["force_include"][file] = f"{root_name}/extensions/{duckdb_version}/{file.name}"
 
@@ -49,14 +50,15 @@ class CustomBuildHook(BuildHookInterface):
         download_dir.mkdir(parents=True, exist_ok=True)  # Ensure the download directory exists
         base_url = f"https://extensions.duckdb.org/{duckdb_version}"
         extension_name = self.metadata.config["tool"]["extension_builder"]["extension_name"]
+        alias = self.metadata.name.replace("-", "_").replace("duckdb_extension_", "")
         url = f"{base_url}/{duckdb_arch}/{extension_name}.duckdb_extension.gz"
         response = requests.get(url)
         if response.status_code == 200:
             arch_dir = download_dir / duckdb_version / duckdb_arch
             arch_dir.mkdir(parents=True, exist_ok=True)
-            file_path = arch_dir / (extension_name + ".duckdb_extension.gz")
+            file_path = arch_dir / (alias + ".duckdb_extension.gz")
             with open(file_path, "wb") as file:
                 file.write(response.content)
-            print(f"Downloaded {extension_name}.duckdb_extension to {file_path}")
+            print(f"Downloaded {extension_name} to {file_path}")
         else:
             print(f"Failed to download {extension_name} from {url}. Status code: {response.status_code}")

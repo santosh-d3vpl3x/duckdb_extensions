@@ -1,4 +1,4 @@
-# 🦆DuckDB HTTPFS extension as python package
+# 🦆DuckDB {@cookiecutter.extension_name@} extension as python package
 
 [![PyPI - Version](https://img.shields.io/pypi/v/duckdb-extension-{@cookiecutter.extension_name@}.svg)](https://pypi.org/project/duckdb-extension-{@cookiecutter.extension_name@})
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckdb-extension-{@cookiecutter.extension_name@}.svg)](https://pypi.org/project/duckdb-extension-{@cookiecutter.extension_name@})

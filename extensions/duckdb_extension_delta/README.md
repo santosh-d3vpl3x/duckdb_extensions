@@ -1,4 +1,4 @@
-# 🦆DuckDB HTTPFS extension as python package
+# 🦆DuckDB delta extension as python package
 
 [![PyPI - Version](https://img.shields.io/pypi/v/duckdb-extension-delta.svg)](https://pypi.org/project/duckdb-extension-delta)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckdb-extension-delta.svg)](https://pypi.org/project/duckdb-extension-delta)
