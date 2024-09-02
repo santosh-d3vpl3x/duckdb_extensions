@@ -1,4 +1,5 @@
-# DuckDB extensions on pypi
+# pip installable DuckDB extensions
+pip installable duckdb core extensions so you don't have to leave your python ecosystem behind.
 
 [![PyPI - Version](https://img.shields.io/pypi/v/duckdb-extensions.svg)](https://pypi.org/project/duckdb-extensions)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckdb-extensions.svg)](https://pypi.org/project/duckdb-extensions)

@@ -1,7 +1,7 @@
 [project]
 name = "duckdb_extension_spatial"
 description = "Duckdb spatial extension"
-version = "1.0.3.a1"
+version = "1.0.3"
 requires-python = ">=3.8"
 license = "MIT"
 readme = "README.md"
