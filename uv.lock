@@ -171,7 +171,7 @@ wheels = [
 
 [[package]]
 name = "duckdb-extension-arrow"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_arrow" }
 dependencies = [
     { name = "duckdb" },
@@ -188,7 +188,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-autocomplete"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_autocomplete" }
 dependencies = [
     { name = "duckdb" },
@@ -205,7 +205,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-aws"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_aws" }
 dependencies = [
     { name = "duckdb" },
@@ -222,7 +222,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-azure"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_azure" }
 dependencies = [
     { name = "duckdb" },
@@ -239,7 +239,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-delta"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_delta" }
 dependencies = [
     { name = "duckdb" },
@@ -256,7 +256,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-excel"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_excel" }
 dependencies = [
     { name = "duckdb" },
@@ -273,7 +273,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-httpfs"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_httpfs" }
 dependencies = [
     { name = "duckdb" },
@@ -290,7 +290,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-iceberg"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_iceberg" }
 dependencies = [
     { name = "duckdb" },
@@ -307,7 +307,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-inet"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_inet" }
 dependencies = [
     { name = "duckdb" },
@@ -324,7 +324,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-motherduck"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_motherduck" }
 dependencies = [
     { name = "duckdb" },
@@ -341,7 +341,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-mysql-scanner"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_mysql_scanner" }
 dependencies = [
     { name = "duckdb" },
@@ -358,7 +358,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-parquet"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_parquet" }
 dependencies = [
     { name = "duckdb" },
@@ -375,7 +375,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-postgres"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_postgres" }
 dependencies = [
     { name = "duckdb" },
@@ -392,7 +392,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-postgres-scanner"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_postgres_scanner" }
 dependencies = [
     { name = "duckdb" },
@@ -409,7 +409,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-spatial"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_spatial" }
 dependencies = [
     { name = "duckdb" },
@@ -426,7 +426,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-sqlite-scanner"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_sqlite_scanner" }
 dependencies = [
     { name = "duckdb" },
@@ -443,7 +443,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-substrait"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_substrait" }
 dependencies = [
     { name = "duckdb" },
@@ -460,7 +460,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extension-vss"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "extensions/duckdb_extension_vss" }
 dependencies = [
     { name = "duckdb" },
@@ -477,7 +477,7 @@ requires-dist = [
 
 [[package]]
 name = "duckdb-extensions"
-version = "1.0.3"
+version = "1.0.4a1"
 source = { editable = "." }
 dependencies = [
     { name = "duckdb" },

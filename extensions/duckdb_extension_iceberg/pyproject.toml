@@ -1,7 +1,7 @@
 [project]
 name = "duckdb_extension_iceberg"
 description = "Duckdb iceberg extension"
-version = "1.0.3"
+version = "1.0.4a1"
 requires-python = ">=3.8"
 license = "MIT"
 readme = "README.md"
