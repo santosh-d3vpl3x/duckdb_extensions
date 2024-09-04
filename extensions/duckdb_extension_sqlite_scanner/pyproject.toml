@@ -1,7 +1,6 @@
 [project]
 name = "duckdb_extension_sqlite_scanner"
 description = "Duckdb sqlite_scanner extension"
-version = "1.0.4a1"
 requires-python = ">=3.8"
 license = "MIT"
 readme = "README.md"
@@ -26,6 +25,8 @@ dependencies = [
     "importlib-resources==3.0.0;python_version<'3.9'",
 ]
 
+dynamic = ["version"]
+
 [project.urls]
 Documentation = "https://github.com/santosh-d3vpl3x/duckdb_extensions#readme"
 Issues = "https://github.com/santosh-d3vpl3x/duckdb_extensions/issues"
@@ -34,6 +35,9 @@ Source = "https://github.com/santosh-d3vpl3x/duckdb_extensions"
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "../../_version.py"
 
 [tool.hatch.build.targets.wheel.hooks.custom]
 path = "../../add_extension_files.py"
