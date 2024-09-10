@@ -37,7 +37,7 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 - `osx_amd64`
 - `windows_amd64`
 
-Compatible with `duckdb==1.0.0`
+Compatible with `duckdb==1.1.0`
 
 Note:
 - No `windows_amd64` for `duckdb_extension_substrait`
