@@ -6,22 +6,21 @@ license = "MIT"
 readme = "README.md"
 keywords = []
 authors = [
-  { name = "santosh", email = "void@some.where" },
+    { name = "santosh", email = "void@some.where" },
 ]
 classifiers = [
-  "Development Status :: 4 - Beta",
-  "Programming Language :: Python",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: Implementation :: CPython",
-  "Programming Language :: Python :: Implementation :: PyPy",
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-    "requests>=1.0.0",
-    "duckdb>=1.0.0",
+    "duckdb==1.1.0",
     "importlib-resources==3.0.0;python_version<'3.9'",
 ]
 
@@ -42,6 +41,7 @@ path = "../../_version.py"
 [tool.hatch.build.targets.wheel.hooks.custom]
 path = "../../add_extension_files.py"
 require-runtime-dependencies = true
+dependencies = ["requests>=1.0.0", ]
 
 [tool.extension_builder]
 extension_name = "postgres_scanner"

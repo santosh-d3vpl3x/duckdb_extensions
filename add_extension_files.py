@@ -1,5 +1,7 @@
+import gzip
+import os
 import pathlib
-from pprint import pprint
+import shutil
 from typing import Any
 import duckdb
 import requests
@@ -26,7 +28,7 @@ class CustomBuildHook(BuildHookInterface):
     def include_files(self, build_data, duckdb_arch, duckdb_version, download_dir):
         file_path = download_dir / duckdb_version / duckdb_arch
         alias = self.metadata.name.replace("-", "_").replace("duckdb_extension_", "")
-        for file in file_path.glob(f"{alias}.duckdb_extension.gz"):
+        for file in file_path.glob(f"{alias}.duckdb_extension"):
             root_name = self.metadata.name.replace("-", "_")
             build_data["force_include"][file] = f"{root_name}/extensions/{duckdb_version}/{file.name}"
 
@@ -52,13 +54,17 @@ class CustomBuildHook(BuildHookInterface):
         extension_name = self.metadata.config["tool"]["extension_builder"]["extension_name"]
         alias = self.metadata.name.replace("-", "_").replace("duckdb_extension_", "")
         url = f"{base_url}/{duckdb_arch}/{extension_name}.duckdb_extension.gz"
-        response = requests.get(url)
-        if response.status_code == 200:
-            arch_dir = download_dir / duckdb_version / duckdb_arch
-            arch_dir.mkdir(parents=True, exist_ok=True)
-            file_path = arch_dir / (alias + ".duckdb_extension.gz")
-            with open(file_path, "wb") as file:
-                file.write(response.content)
-            print(f"Downloaded {extension_name} to {file_path}")
-        else:
-            print(f"Failed to download {extension_name} from {url}. Status code: {response.status_code}")
+        response = requests.get(url, timeout=10)
+        response.raise_for_status()
+        arch_dir = download_dir / duckdb_version / duckdb_arch
+        arch_dir.mkdir(parents=True, exist_ok=True)
+        gz_file_path = arch_dir / f"{alias}.duckdb_extension.gz"
+        extension_file_path = arch_dir / f"{alias}.duckdb_extension"
+
+        with open(gz_file_path, "wb") as gz_file:
+            gz_file.write(response.content)
+        block_size = 65536
+        with gzip.open(gz_file_path, "rb") as s_file, open(extension_file_path, "wb") as d_file:
+            shutil.copyfileobj(s_file, d_file, block_size)
+        os.remove(gz_file_path)
+        print(f"Downloaded {alias} to {extension_file_path}")
