@@ -20,7 +20,7 @@ classifiers = [
     "Programming Language :: Python :: Implementation :: PyPy",
 ]
 dependencies = [
-    "duckdb==1.1.0",
+    "duckdb==1.1.1",
     "importlib-resources==3.0.0;python_version<'3.9'",
 ]
 
