@@ -3,3 +3,6 @@
 **.duckdb_extension
 /.venv/
 /.idea/
+**.ipynb
+/csv
+**.csv
