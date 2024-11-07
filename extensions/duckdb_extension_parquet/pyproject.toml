@@ -2,7 +2,7 @@
 name = "duckdb_extension_parquet"
 description = 'Duckdb parquet extension'
 requires-python = ">=3.8"
-license = "MIT"
+license = {text = "MIT"}
 readme = "README.md"
 keywords = []
 authors = [
@@ -18,7 +18,8 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: Implementation :: CPython",
-    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: Implementation :: PyPy", 
+    "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
     "duckdb==1.1.3",
