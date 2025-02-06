@@ -18,17 +18,24 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 - [duckdb_extension_azure](extensions/duckdb_extension_azure)
 - [duckdb_extension_delta](extensions/duckdb_extension_delta)
 - [duckdb_extension_excel](extensions/duckdb_extension_excel)
+- [duckdb_extension_fts](extensions/duckdb_extension_fts)
 - [duckdb_extension_httpfs](extensions/duckdb_extension_httpfs)
 - [duckdb_extension_iceberg](extensions/duckdb_extension_iceberg)
 - [duckdb_extension_inet](extensions/duckdb_extension_inet)
+- [duckdb_extension_json](extensions/duckdb_extension_json)
 - [duckdb_extension_motherduck](extensions/duckdb_extension_motherduck)
+- [duckdb_extension_mysql](extensions/duckdb_extension_mysql)
 - [duckdb_extension_mysql_scanner](extensions/duckdb_extension_mysql_scanner)
 - [duckdb_extension_parquet](extensions/duckdb_extension_parquet)
 - [duckdb_extension_postgres](extensions/duckdb_extension_postgres)
 - [duckdb_extension_postgres_scanner](extensions/duckdb_extension_postgres_scanner)
 - [duckdb_extension_spatial](extensions/duckdb_extension_spatial)
+- [duckdb_extension_sqlite](extensions/duckdb_extension_sqlite)
+- [duckdb_extension_sqlite3](extensions/duckdb_extension_sqlite3)
 - [duckdb_extension_sqlite_scanner](extensions/duckdb_extension_sqlite_scanner)
 - [duckdb_extension_substrait](extensions/duckdb_extension_substrait)
+- [duckdb_extension_tpcds](extensions/duckdb_extension_tpcds)
+- [duckdb_extension_tpch](extensions/duckdb_extension_tpch)
 - [duckdb_extension_vss](extensions/duckdb_extension_vss)
 
 **The architectures supported:**
@@ -37,7 +44,7 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 - `osx_amd64`
 - `windows_amd64`
 
-Compatible with `duckdb==1.1.3`
+Compatible with `duckdb==1.2.0`
 
 Note:
 - No `windows_amd64` for `duckdb_extension_substrait`
