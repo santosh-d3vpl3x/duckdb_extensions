@@ -28,7 +28,6 @@ members = [
     "duckdb-extension-sqlite",
     "duckdb-extension-sqlite-scanner",
     "duckdb-extension-sqlite3",
-    "duckdb-extension-substrait",
     "duckdb-extension-tpcds",
     "duckdb-extension-tpch",
     "duckdb-extension-vss",
@@ -394,21 +393,6 @@ requires-dist = [
 name = "duckdb-extension-sqlite3"
 version = "1.2.0a0"
 source = { editable = "extensions/duckdb_extension_sqlite3" }
-dependencies = [
-    { name = "duckdb" },
-    { name = "importlib-resources", marker = "python_full_version < '3.9'" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "duckdb", specifier = "==1.2.0" },
-    { name = "importlib-resources", marker = "python_full_version < '3.9'", specifier = ">=3.0.0" },
-]
-
-[[package]]
-name = "duckdb-extension-substrait"
-version = "1.2.0a0"
-source = { editable = "extensions/duckdb_extension_substrait" }
 dependencies = [
     { name = "duckdb" },
     { name = "importlib-resources", marker = "python_full_version < '3.9'" },
