@@ -12,7 +12,7 @@ except ImportError:
     import importlib.resources as ilr
 
 
-def import_extension(name: str):
+def import_extension(name: str, force_install: bool = False):
     quack_module = importlib.import_module(f"duckdb_extension_{name}")
     module_path = pathlib.Path(str(ilr.files(quack_module)))
 
@@ -21,4 +21,4 @@ def import_extension(name: str):
     extension_dir = module_path / "extensions" / duckdb_version
     extension_file = extension_dir / f"{name}.duckdb_extension"
 
-    duckdb.sql(f"INSTALL '{extension_file}'")
+    duckdb.sql(f"{'FORCE ' if force_install else ''} INSTALL '{extension_file}'")
