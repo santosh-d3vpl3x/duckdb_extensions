@@ -27,10 +27,10 @@ jobs:
       working-directory: ./extensions/duckdb_extension_parquet
       run: |
         uv tool run hatch build -t wheel linux_amd64_gcc4
-#    - name: build duckdb_extension_parquet for linux_arm64
-#      working-directory: ./extensions/duckdb_extension_parquet
-#      run: |
-#        uv tool run hatch build -t wheel linux_arm64
+    - name: build duckdb_extension_parquet for linux_arm64
+      working-directory: ./extensions/duckdb_extension_parquet
+      run: |
+        uv tool run hatch build -t wheel linux_arm64
     - name: build duckdb_extension_parquet for osx_amd64
       working-directory: ./extensions/duckdb_extension_parquet
       run: |
@@ -55,7 +55,7 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
-#          - arm-ubuntu-22.04
+          - ubuntu-24.04-arm
           - windows-latest
           - macos-latest
           - macos-13
