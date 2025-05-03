@@ -23,10 +23,10 @@ jobs:
       working-directory: ./extensions/duckdb_extension_sqlite3
       run: |
         uv tool run hatch build -t wheel osx_arm64
-    - name: build duckdb_extension_sqlite3 for linux_amd64
+    - name: build duckdb_extension_sqlite3 for linux_amd64_gcc4
       working-directory: ./extensions/duckdb_extension_sqlite3
       run: |
-        uv tool run hatch build -t wheel linux_amd64
+        uv tool run hatch build -t wheel linux_amd64_gcc4
     - name: build duckdb_extension_sqlite3 for linux_arm64
       working-directory: ./extensions/duckdb_extension_sqlite3
       run: |
