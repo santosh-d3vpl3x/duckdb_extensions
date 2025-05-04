@@ -12,7 +12,6 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 - [License](#license)
 
 ## Available extensions
-- [duckdb_extension_arrow](extensions/duckdb_extension_arrow)
 - [duckdb_extension_autocomplete](extensions/duckdb_extension_autocomplete)
 - [duckdb_extension_aws](extensions/duckdb_extension_aws)
 - [duckdb_extension_azure](extensions/duckdb_extension_azure)
@@ -35,6 +34,7 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 - [duckdb_extension_sqlite_scanner](extensions/duckdb_extension_sqlite_scanner)
 - [duckdb_extension_tpcds](extensions/duckdb_extension_tpcds)
 - [duckdb_extension_tpch](extensions/duckdb_extension_tpch)
+- [duckdb_extension_ui](extensions/duckdb_extension_ui)
 - [duckdb_extension_vss](extensions/duckdb_extension_vss)
 
 **The architectures supported:**
@@ -44,7 +44,7 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 - `osx_amd64`
 - `windows_amd64`
 
-Compatible with `duckdb==1.2.0`
+Compatible with `duckdb==1.2.2`
 
 ## Installation
 First install `duckdb-extensions`.

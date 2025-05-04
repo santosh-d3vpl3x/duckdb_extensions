@@ -1,6 +1,6 @@
 [project]
-name = "duckdb_extension_arrow"
-description = "Duckdb arrow extension"
+name = "duckdb_extension_ui"
+description = "Duckdb ui extension"
 requires-python = ">=3.8"
 license = {text = "MIT"}
 readme = "README.md"
@@ -22,7 +22,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
-    "duckdb==1.2.0",
+    "duckdb==1.2.2",
     "importlib-resources>=3.0.0;python_version<'3.9'",
 ]
 
@@ -46,4 +46,4 @@ require-runtime-dependencies = true
 dependencies = ["requests>=1.0.0", ]
 
 [tool.extension_builder]
-extension_name = "arrow"
+extension_name = "ui"

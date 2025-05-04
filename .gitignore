@@ -6,4 +6,5 @@
 **.ipynb
 /csv
 **.csv
-__pycache__/**.pyc
+**/__pycache__/**
+**/act
