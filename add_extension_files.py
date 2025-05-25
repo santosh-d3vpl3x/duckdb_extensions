@@ -34,7 +34,7 @@ class CustomBuildHook(BuildHookInterface):
 
     @staticmethod
     def add_tag(build_data, duckdb_arch):
-        if duckdb_arch == "linux_amd64_gcc4":
+        if duckdb_arch == "linux_amd64":
             build_data["tag"] = "py3-none-manylinux2014_x86_64"
         elif duckdb_arch == "linux_arm64":
             build_data["tag"] = "py3-none-manylinux2014_aarch64"

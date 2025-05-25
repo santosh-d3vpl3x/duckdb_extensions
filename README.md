@@ -38,7 +38,7 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 - [duckdb_extension_vss](extensions/duckdb_extension_vss)
 
 **The architectures supported:**
-- `linux_amd64_gcc4`
+- `linux_amd64`
 - `linux_arm64`
 - `osx_arm64`
 - `osx_amd64`
