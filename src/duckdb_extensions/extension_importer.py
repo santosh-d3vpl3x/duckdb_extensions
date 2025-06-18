@@ -22,7 +22,10 @@ def import_extension(name: str, force_install: bool = False, con: Optional[DuckD
     quack_module = importlib.import_module(f"duckdb_extension_{name}")
     module_path = pathlib.Path(str(ilr.files(quack_module)))
 
-    duckdb_version = con.sql("PRAGMA version;").fetchone()[0]
+    version_row = con.sql("PRAGMA version;").fetchone()
+    if version_row is None:
+        raise RuntimeError("Failed to retrieve DuckDB version information from the connection.")
+    duckdb_version = version_row[0]
 
     extension_dir = module_path / "extensions" / duckdb_version
     extension_file = extension_dir / f"{name}.duckdb_extension"
