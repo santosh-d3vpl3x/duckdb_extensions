@@ -17,8 +17,8 @@ pip install duckdb-extensions duckdb-extension-tpch
 ```
 You are ready to install the extension for duckdb.
 ```python
-from duckdb_extensions import extension_importer
-extension_importer.import_extension("tpch")
+from duckdb_extensions import import_extension
+import_extension("tpch")
 ```
 
 Verify that the extension is installed.

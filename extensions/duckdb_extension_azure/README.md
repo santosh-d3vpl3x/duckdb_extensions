@@ -17,8 +17,8 @@ pip install duckdb-extensions duckdb-extension-azure
 ```
 You are ready to install the extension for duckdb.
 ```python
-from duckdb_extensions import extension_importer
-extension_importer.import_extension("azure")
+from duckdb_extensions import import_extension
+import_extension("azure")
 ```
 
 Verify that the extension is installed.

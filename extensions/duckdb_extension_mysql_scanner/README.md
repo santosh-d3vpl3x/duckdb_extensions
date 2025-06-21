@@ -17,8 +17,8 @@ pip install duckdb-extensions duckdb-extension-mysql-scanner
 ```
 You are ready to install the extension for duckdb.
 ```python
-from duckdb_extensions import extension_importer
-extension_importer.import_extension("mysql_scanner")
+from duckdb_extensions import import_extension
+import_extension("mysql_scanner")
 ```
 
 Verify that the extension is installed.
