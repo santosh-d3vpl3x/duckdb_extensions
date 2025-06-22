@@ -17,8 +17,8 @@ pip install duckdb-extensions duckdb-extension-ui
 ```
 You are ready to install the extension for duckdb.
 ```python
-from duckdb_extensions import extension_importer
-extension_importer.import_extension("ui")
+from duckdb_extensions import import_extension
+import_extension("ui")
 ```
 
 Verify that the extension is installed.

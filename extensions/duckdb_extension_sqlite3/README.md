@@ -17,8 +17,8 @@ pip install duckdb-extensions duckdb-extension-sqlite3
 ```
 You are ready to install the extension for duckdb.
 ```python
-from duckdb_extensions import extension_importer
-extension_importer.import_extension("sqlite3")
+from duckdb_extensions import import_extension
+import_extension("sqlite3")
 ```
 
 Verify that the extension is installed.

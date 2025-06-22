@@ -17,8 +17,8 @@ pip install duckdb-extensions duckdb-extension-{@cookiecutter.extension_name | r
 ```
 You are ready to install the extension for duckdb.
 ```python
-from duckdb_extensions import extension_importer
-extension_importer.import_extension("{@cookiecutter.extension_name@}")
+from duckdb_extensions import import_extension
+import_extension("{@cookiecutter.extension_name@}")
 ```
 
 Verify that the extension is installed.
