@@ -1,4 +1,4 @@
-# pip installable DuckDB extensions
+# 🦆pip installable DuckDB extensions
 pip installable duckdb core extensions so you don't have to leave your python ecosystem behind.
 
 [![PyPI - Version](https://img.shields.io/pypi/v/duckdb-extensions.svg)](https://pypi.org/project/duckdb-extensions)
@@ -68,7 +68,9 @@ import duckdb
 
 print(
     duckdb.sql("""SELECT installed
-                FROM duckdb_extensions() where extension_name='httpfs'""")
+                FROM duckdb_extensions() where
+                extension_name='httpfs' or
+                list_contains(aliases, 'httpfs')""")
     .fetchone()[0]
 )
 ```
