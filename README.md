@@ -14,6 +14,7 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 ## Available extensions
 - [duckdb_extension_autocomplete](extensions/duckdb_extension_autocomplete)
 - [duckdb_extension_aws](extensions/duckdb_extension_aws)
+- [duckdb_extension_avro](extensions/duckdb_extension_avro)
 - [duckdb_extension_azure](extensions/duckdb_extension_azure)
 - [duckdb_extension_delta](extensions/duckdb_extension_delta)
 - [duckdb_extension_excel](extensions/duckdb_extension_excel)
