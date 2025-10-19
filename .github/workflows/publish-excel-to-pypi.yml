@@ -11,6 +11,10 @@ on:
       - main
       - support_*
 
+concurrency:
+  group: publish-excel-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     name: Build duckdb_extension_excel 📦
