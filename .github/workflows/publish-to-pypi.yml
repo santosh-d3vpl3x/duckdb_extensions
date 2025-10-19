@@ -28,7 +28,7 @@ jobs:
         sudo apt install -y curl unzip
         curl -LsSf https://astral.sh/uv/install.sh | sh
     - name: Install python
-      run: uv venv
+      run: uv venv --python 3.12
     - name: build duckdb_extensions wheel
       run: uv tool run hatch build -t wheel
     - name: Store the distribution packages
