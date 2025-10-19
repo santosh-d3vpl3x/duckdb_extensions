@@ -102,9 +102,9 @@ jobs:
         env:
           EXTENSION_NAME: json
         run: |
-          uv sync --verbose
+          uv pip install -e .
           uv pip install pytest
-          uv pip install --no-index --find-links dist --verbose duckdb-extension-json
+          uv pip install --no-index --find-links dist duckdb-extension-json
           uv run pytest
   publish-to-pypi:
     name: Publish 🦆duckdb_extension_json 🐍📦 to PyPI
