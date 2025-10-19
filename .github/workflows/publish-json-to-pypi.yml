@@ -32,7 +32,7 @@ jobs:
         sudo apt install -y curl unzip
         curl -LsSf https://astral.sh/uv/install.sh | sh
     - name: Install python
-      run: uv venv
+      run: uv venv --python 3.12
     - name: build duckdb_extension_json for osx_arm64
       working-directory: ./extensions/duckdb_extension_json
       run: |
@@ -92,7 +92,7 @@ jobs:
         if: runner.os == 'Windows'
         run: powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
       - name: Install python
-        run: uv venv
+        run: uv venv --python 3.12
       - name: Download all the dists
         uses: actions/download-artifact@v4
         with:
