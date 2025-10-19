@@ -1,5 +1,15 @@
 name: Publish 🦆duckdb_extension_motherduck 🐍📦 to PyPI
-on: push
+on:
+  push:
+    branches:
+      - main
+      - support_*
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - main
+      - support_*
 
 jobs:
   build:

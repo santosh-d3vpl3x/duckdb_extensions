@@ -1,5 +1,15 @@
 name: Publish duckdb_extensions 🐍 distribution 📦 to PyPI
-on: push
+on:
+  push:
+    branches:
+      - main
+      - support_*
+    tags:
+      - '*'
+  pull_request:
+    branches:
+      - main
+      - support_*
 
 jobs:
   build:
