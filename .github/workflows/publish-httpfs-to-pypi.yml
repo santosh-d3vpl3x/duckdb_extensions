@@ -102,9 +102,9 @@ jobs:
         env:
           EXTENSION_NAME: httpfs
         run: |
-          uv sync --verbose
+          uv pip install -e .
           uv pip install pytest
-          uv pip install --no-index --find-links dist --verbose duckdb-extension-httpfs
+          uv pip install --no-index --find-links dist duckdb-extension-httpfs
           uv run pytest
   publish-to-pypi:
     name: Publish 🦆duckdb_extension_httpfs 🐍📦 to PyPI

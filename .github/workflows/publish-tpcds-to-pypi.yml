@@ -102,9 +102,9 @@ jobs:
         env:
           EXTENSION_NAME: tpcds
         run: |
-          uv sync --verbose
+          uv pip install -e .
           uv pip install pytest
-          uv pip install --no-index --find-links dist --verbose duckdb-extension-tpcds
+          uv pip install --no-index --find-links dist duckdb-extension-tpcds
           uv run pytest
   publish-to-pypi:
     name: Publish 🦆duckdb_extension_tpcds 🐍📦 to PyPI
