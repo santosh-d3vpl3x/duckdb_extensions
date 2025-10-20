@@ -33,10 +33,11 @@ runs:
       with:
         enable-cache: ${{ inputs.enable-cache }}
         cache-dependency-glob: ${{ inputs.cache-dependency-glob }}
+        python-version: ${{ inputs.python-version }}
 
     - name: Create virtual environment
       id: setup-venv
       shell: bash
       run: |
-        uv venv --python ${{ inputs.python-version }}
-        echo "python-path=$(which python)" >> $GITHUB_OUTPUT
+        uv venv
+        echo "python-path=$(which python)" >> "${GITHUB_OUTPUT}"
