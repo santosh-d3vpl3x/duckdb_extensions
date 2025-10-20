@@ -1,7 +1,7 @@
 [project]
 name = "duckdb_extension_json"
 description = "Duckdb json extension"
-requires-python = ">=3.9"
+requires-python = ">=3.8"
 license = {text = "MIT"}
 readme = "README.md"
 keywords = []
@@ -11,6 +11,7 @@ authors = [
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python",
+    "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",

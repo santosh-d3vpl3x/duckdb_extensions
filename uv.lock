@@ -4,13 +4,17 @@ requires-python = ">=3.8"
 [manifest]
 members = [
     "duckdb-extension-autocomplete",
+    "duckdb-extension-avro",
     "duckdb-extension-aws",
     "duckdb-extension-azure",
     "duckdb-extension-delta",
+    "duckdb-extension-ducklake",
+    "duckdb-extension-encodings",
     "duckdb-extension-excel",
     "duckdb-extension-fts",
     "duckdb-extension-httpfs",
     "duckdb-extension-iceberg",
+    "duckdb-extension-icu",
     "duckdb-extension-inet",
     "duckdb-extension-json",
     "duckdb-extension-motherduck",
@@ -89,6 +93,21 @@ requires-dist = [
 ]
 
 [[package]]
+name = "duckdb-extension-avro"
+version = "1.3.2"
+source = { editable = "extensions/duckdb_extension_avro" }
+dependencies = [
+    { name = "duckdb" },
+    { name = "importlib-resources", marker = "python_full_version < '3.9'" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "duckdb", specifier = "==1.3.2" },
+    { name = "importlib-resources", marker = "python_full_version < '3.9'", specifier = ">=3.0.0" },
+]
+
+[[package]]
 name = "duckdb-extension-aws"
 version = "1.3.2"
 source = { editable = "extensions/duckdb_extension_aws" }
@@ -122,6 +141,36 @@ requires-dist = [
 name = "duckdb-extension-delta"
 version = "1.3.2"
 source = { editable = "extensions/duckdb_extension_delta" }
+dependencies = [
+    { name = "duckdb" },
+    { name = "importlib-resources", marker = "python_full_version < '3.9'" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "duckdb", specifier = "==1.3.2" },
+    { name = "importlib-resources", marker = "python_full_version < '3.9'", specifier = ">=3.0.0" },
+]
+
+[[package]]
+name = "duckdb-extension-ducklake"
+version = "1.3.2"
+source = { editable = "extensions/duckdb_extension_ducklake" }
+dependencies = [
+    { name = "duckdb" },
+    { name = "importlib-resources", marker = "python_full_version < '3.9'" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "duckdb", specifier = "==1.3.2" },
+    { name = "importlib-resources", marker = "python_full_version < '3.9'", specifier = ">=3.0.0" },
+]
+
+[[package]]
+name = "duckdb-extension-encodings"
+version = "1.3.2"
+source = { editable = "extensions/duckdb_extension_encodings" }
 dependencies = [
     { name = "duckdb" },
     { name = "importlib-resources", marker = "python_full_version < '3.9'" },
@@ -182,6 +231,21 @@ requires-dist = [
 name = "duckdb-extension-iceberg"
 version = "1.3.2"
 source = { editable = "extensions/duckdb_extension_iceberg" }
+dependencies = [
+    { name = "duckdb" },
+    { name = "importlib-resources", marker = "python_full_version < '3.9'" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "duckdb", specifier = "==1.3.2" },
+    { name = "importlib-resources", marker = "python_full_version < '3.9'", specifier = ">=3.0.0" },
+]
+
+[[package]]
+name = "duckdb-extension-icu"
+version = "1.3.2"
+source = { editable = "extensions/duckdb_extension_icu" }
 dependencies = [
     { name = "duckdb" },
     { name = "importlib-resources", marker = "python_full_version < '3.9'" },
