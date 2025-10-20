@@ -102,9 +102,9 @@ jobs:
         env:
           EXTENSION_NAME: sqlite
         run: |
-          uv pip install -e .
+          uv sync --verbose
           uv pip install pytest
-          uv pip install --no-index --find-links dist duckdb-extension-sqlite
+          uv pip install --no-index --find-links dist --verbose duckdb-extension-sqlite
           uv run pytest
   publish-to-pypi:
     name: Publish 🦆duckdb_extension_sqlite 🐍📦 to PyPI

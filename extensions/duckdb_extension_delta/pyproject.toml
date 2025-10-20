@@ -22,7 +22,6 @@ classifiers = [
 ]
 dependencies = [
     "duckdb==1.4.0",
-    "importlib-resources>=3.0.0;python_version<'3.9'",
 ]
 
 dynamic = ["version"]
