@@ -17,7 +17,7 @@ inputs:
 outputs:
   python-path:
     description: 'Path to Python executable'
-    value: ${{ steps.setup-venv.outputs.python-path }}
+    value: ${{ steps.setup-uv.outputs.venv }}
 
 runs:
   using: 'composite'
@@ -29,15 +29,10 @@ runs:
         apt-get update && apt-get install sudo -y
 
     - name: Install the latest version of uv
+      id: setup-uv
       uses: astral-sh/setup-uv@v7
       with:
         enable-cache: ${{ inputs.enable-cache }}
         cache-dependency-glob: ${{ inputs.cache-dependency-glob }}
         python-version: ${{ inputs.python-version }}
-
-    - name: Create virtual environment
-      id: setup-venv
-      shell: bash
-      run: |
-        uv venv
-        echo "python-path=$(which python)" >> "${GITHUB_OUTPUT}"
+        activate-environment: .venv
