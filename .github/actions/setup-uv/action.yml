@@ -1,0 +1,42 @@
+name: 'Setup UV and Python Environment'
+description: 'Setup UV package manager and Python environment with caching'
+inputs:
+  python-version:
+    description: 'Python version to use'
+    required: false
+    default: '3.12'
+  cache-dependency-glob:
+    description: 'Glob pattern for cache dependency files'
+    required: false
+    default: '**/pyproject.toml'
+  enable-cache:
+    description: 'Enable caching of UV dependencies'
+    required: false
+    default: 'true'
+
+outputs:
+  python-path:
+    description: 'Path to Python executable'
+    value: ${{ steps.setup-venv.outputs.python-path }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Install Act dependencies
+      if: ${{ env.ACT }}
+      shell: bash
+      run: |
+        apt-get update && apt-get install sudo -y
+
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        enable-cache: ${{ inputs.enable-cache }}
+        cache-dependency-glob: ${{ inputs.cache-dependency-glob }}
+
+    - name: Create virtual environment
+      id: setup-venv
+      shell: bash
+      run: |
+        uv venv --python ${{ inputs.python-version }}
+        echo "python-path=$(which python)" >> $GITHUB_OUTPUT
