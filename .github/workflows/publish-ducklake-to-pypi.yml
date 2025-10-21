@@ -31,7 +31,7 @@ jobs:
         enable-cache: true
         cache-dependency-glob: "**/pyproject.toml"
         python-version: "3.12"
-        activate-environment: .venv
+        activate-environment: true
     - name: build duckdb_extension_ducklake for osx_arm64
       working-directory: ./extensions/duckdb_extension_ducklake
       run: |
@@ -85,7 +85,7 @@ jobs:
           enable-cache: true
           cache-dependency-glob: "**/pyproject.toml"
           python-version: "3.12"
-          activate-environment: .venv
+          activate-environment: true
       - name: Download all the dists
         uses: actions/download-artifact@v4
         with:
