@@ -22,13 +22,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Install uv
-      run: |
-        sudo apt update
-        sudo apt install -y curl unzip
-        curl -LsSf https://astral.sh/uv/install.sh | sh
-    - name: Install python
-      run: uv venv --python 3.12
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        enable-cache: true
+        cache-dependency-glob: "**/pyproject.toml"
+        python-version: "3.12"
+        activate-environment: true
     - name: build duckdb_extensions wheel
       run: uv tool run hatch build -t wheel
     - name: Store the distribution packages
