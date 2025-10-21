@@ -26,13 +26,13 @@ jobs:
       if: ${{ env.ACT }}
       run: |
         apt-get update && apt-get install sudo -y
-    - name: Install uv
-      run: |
-        sudo apt update
-        sudo apt install -y curl unzip
-        curl -LsSf https://astral.sh/uv/install.sh | sh
-    - name: Install python
-      run: uv venv --python 3.12
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        enable-cache: true
+        cache-dependency-glob: "**/pyproject.toml"
+        python-version: "3.12"
+        activate-environment: .venv
     - name: build duckdb_extension_httpfs for osx_arm64
       working-directory: ./extensions/duckdb_extension_httpfs
       run: |
@@ -80,19 +80,13 @@ jobs:
         if: ${{ env.ACT }}
         run: |
           apt-get update && apt-get install sudo -y
-      - name: Install curl
-        if: runner.os == 'Linux'
-        run: |
-          sudo apt update
-          sudo apt install -y curl
-      - name: Install uv via curl
-        if: runner.os == 'Linux' || runner.os == 'macOS'
-        run: curl -LsSf https://astral.sh/uv/install.sh | sh
-      - name: Install uv via powershell
-        if: runner.os == 'Windows'
-        run: powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
-      - name: Install python
-        run: uv venv --python 3.12
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          cache-dependency-glob: "**/pyproject.toml"
+          python-version: "3.12"
+          activate-environment: .venv
       - name: Download all the dists
         uses: actions/download-artifact@v4
         with:

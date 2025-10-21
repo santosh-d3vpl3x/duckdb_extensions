@@ -22,8 +22,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - name: Setup UV and Python Environment
-      uses: ./.github/actions/setup-uv
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        enable-cache: true
+        cache-dependency-glob: "**/pyproject.toml"
+        python-version: "3.12"
+        activate-environment: .venv
     - name: build duckdb_extension_aws for osx_arm64
       working-directory: ./extensions/duckdb_extension_aws
       run: |
@@ -67,8 +72,13 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
-      - name: Setup UV and Python Environment
-        uses: ./.github/actions/setup-uv
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          cache-dependency-glob: "**/pyproject.toml"
+          python-version: "3.12"
+          activate-environment: .venv
       - name: Download all the dists
         uses: actions/download-artifact@v4
         with:
