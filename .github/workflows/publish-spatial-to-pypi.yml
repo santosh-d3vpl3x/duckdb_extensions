@@ -20,6 +20,10 @@ on:
       - '.github/workflows/_extension-publish.yml'
       - '.github/workflows/publish-spatial-to-pypi.yml'
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   publish:
     uses: ./.github/workflows/_extension-publish.yml
