@@ -1,120 +1,28 @@
 name: Publish 🦆duckdb_extension_{@cookiecutter.extension_name@} 🐍📦 to PyPI
+
 on:
   push:
     branches:
       - main
       - support_*
+    paths:
+      - 'extensions/duckdb_extension_{@cookiecutter.extension_name@}/**'
+      - '.github/workflows/_extension-publish.yml'
+      - '.github/workflows/publish-{@cookiecutter.extension_name@}-to-pypi.yml'
     tags:
       - '*'
   pull_request:
     branches:
       - main
       - support_*
+    paths:
+      - 'extensions/duckdb_extension_{@cookiecutter.extension_name@}/**'
+      - '.github/workflows/_extension-publish.yml'
+      - '.github/workflows/publish-{@cookiecutter.extension_name@}-to-pypi.yml'
 
 jobs:
-  build:
-    name: Build duckdb_extension_{@cookiecutter.extension_name@} 📦
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Install Act dependencies
-      if: ${{ env.ACT }}
-      run: |
-        apt-get update && apt-get install sudo -y
-    - name: Install the latest version of uv
-      uses: astral-sh/setup-uv@v7
-      with:
-        enable-cache: true
-        cache-dependency-glob: "**/pyproject.toml"
-        python-version: "3.12"
-        activate-environment: true
-    - name: build duckdb_extension_{@cookiecutter.extension_name@} for osx_arm64
-      working-directory: ./extensions/duckdb_extension_{@cookiecutter.extension_name@}
-      run: |
-        uv tool run hatch build -t wheel osx_arm64
-    - name: build duckdb_extension_{@cookiecutter.extension_name@} for linux_amd64
-      working-directory: ./extensions/duckdb_extension_{@cookiecutter.extension_name@}
-      run: |
-        uv tool run hatch build -t wheel linux_amd64
-    - name: build duckdb_extension_{@cookiecutter.extension_name@} for linux_arm64
-      working-directory: ./extensions/duckdb_extension_{@cookiecutter.extension_name@}
-      run: |
-        uv tool run hatch build -t wheel linux_arm64
-    - name: build duckdb_extension_{@cookiecutter.extension_name@} for osx_amd64
-      working-directory: ./extensions/duckdb_extension_{@cookiecutter.extension_name@}
-      run: |
-        uv tool run hatch build -t wheel osx_amd64
-    - name: build duckdb_extension_{@cookiecutter.extension_name@} for windows_amd64
-      working-directory: ./extensions/duckdb_extension_{@cookiecutter.extension_name@}
-      run: |
-        uv tool run hatch build -t wheel windows_amd64
-    - name: Copy wheels to dist directory
-      run: |
-        mkdir dist
-        cp extensions/*/*/*.whl dist
-    - name: Store the distribution packages
-      uses: actions/upload-artifact@v4
-      with:
-        name: duckdb-extension-{@cookiecutter.extension_name@}-distributions
-        path: dist/*.whl
-  test:
-    needs:
-      - build
-    strategy:
-      matrix:
-        os:
-          - ubuntu-latest
-          - ubuntu-24.04-arm
-          - windows-latest
-          - macos-15
-          - macos-26
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Act dependencies
-        if: ${{ env.ACT }}
-        run: |
-          apt-get update && apt-get install sudo -y
-      - name: Install the latest version of uv
-        uses: astral-sh/setup-uv@v7
-        with:
-          enable-cache: true
-          cache-dependency-glob: "**/pyproject.toml"
-          python-version: "3.12"
-          activate-environment: true
-      - name: Download all the dists
-        uses: actions/download-artifact@v4
-        with:
-          name: duckdb-extension-{@cookiecutter.extension_name@}-distributions
-          path: dist/
-      - name: Install packages
-        env:
-          EXTENSION_NAME: {@cookiecutter.extension_name@}
-        run: |
-          uv sync --verbose
-          uv pip install pytest
-          uv pip install --no-index --find-links dist --verbose duckdb-extension-{@cookiecutter.extension_name@}
-          uv run pytest
-  publish-to-pypi:
-    name: Publish 🦆duckdb_extension_{@cookiecutter.extension_name@} 🐍📦 to PyPI
-    if: startsWith(github.ref, 'refs/tags/')
-    needs:
-      - test
-    runs-on: ubuntu-latest
-
-    environment:
-      name: pypi
-      url: https://pypi.org/p/duckdb-extension-{@cookiecutter.extension_name@}
-
-    permissions:
-      id-token: write
-
-    steps:
-      - name: Download all the dists
-        uses: actions/download-artifact@v4
-        with:
-          name: duckdb-extension-{@cookiecutter.extension_name@}-distributions
-          path: dist/
-      - name: Publish distribution 📦 to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+  publish:
+    uses: ./.github/workflows/_extension-publish.yml
+    with:
+      extension_name: {@cookiecutter.extension_name@}
+    secrets: inherit
