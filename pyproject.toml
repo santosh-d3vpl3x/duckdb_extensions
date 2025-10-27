@@ -25,6 +25,9 @@ dependencies = [
     "importlib-resources>=3.0.0;python_version<'3.9'",
 ]
 
+[project.optional-dependencies]
+maintainer = ["click>=8.1"]
+
 dynamic = ["version"]
 
 [project.urls]
@@ -47,4 +50,3 @@ installer = "uv"
 
 [tool.ruff]
 line-length = 120
-
