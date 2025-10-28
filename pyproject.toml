@@ -24,11 +24,10 @@ dependencies = [
     "duckdb==1.4.1",
     "importlib-resources>=3.0.0;python_version<'3.9'",
 ]
+dynamic = ["version"]
 
 [project.optional-dependencies]
 maintainer = ["click>=8.1"]
-
-dynamic = ["version"]
 
 [project.urls]
 Documentation = "https://github.com/santosh-d3vpl3x/duckdb_extensions#readme"
