@@ -3,8 +3,6 @@ import os
 import pathlib
 import shutil
 from typing import Any
-import duckdb
-import requests
 from pathlib import Path
 
 from hatchling.builders.hooks.plugin.interface import BuildHookInterface
@@ -12,6 +10,9 @@ from hatchling.builders.hooks.plugin.interface import BuildHookInterface
 
 class CustomBuildHook(BuildHookInterface):
     def initialize(self, version: str, build_data: dict[str, Any]):
+        # Import here to avoid module-level import before dependencies are installed
+        import duckdb
+
         duckdb_version = duckdb.sql("PRAGMA version;").fetchone()[0]
         if version == "standard" and self.target_name == "wheel":
             duckdb_arch = pathlib.Path(self.directory).name
@@ -49,6 +50,8 @@ class CustomBuildHook(BuildHookInterface):
 
     def download_extensions(self, duckdb_arch, duckdb_version, download_dir):
         """Downloads the extension from the DuckDB repo."""
+        import requests  # Import here to avoid module-level import before dependencies are installed
+
         download_dir.mkdir(parents=True, exist_ok=True)  # Ensure the download directory exists
         base_url = f"https://extensions.duckdb.org/{duckdb_version}"
         extension_name = self.metadata.config["tool"]["extension_builder"]["extension_name"]
