@@ -21,7 +21,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
-    "duckdb==1.4.2",
+    "duckdb==1.4.3",
 ]
 
 dynamic = ["version"]
@@ -32,7 +32,7 @@ Issues = "https://github.com/santosh-d3vpl3x/duckdb_extensions/issues"
 Source = "https://github.com/santosh-d3vpl3x/duckdb_extensions"
 
 [build-system]
-requires = ["hatchling"]
+requires = ["hatchling", "requests>=1.0.0", "duckdb"]
 build-backend = "hatchling.build"
 
 [tool.hatch.version]
@@ -41,7 +41,7 @@ path = "../../_version.py"
 [tool.hatch.build.targets.wheel.hooks.custom]
 path = "../../add_extension_files.py"
 require-runtime-dependencies = true
-dependencies = ["requests>=1.0.0", ]
+dependencies = ["requests>=1.0.0", "duckdb"]
 
 [tool.extension_builder]
 extension_name = "ducklake"
