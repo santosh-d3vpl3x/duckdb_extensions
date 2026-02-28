@@ -72,6 +72,13 @@ When DuckDB publishes a new release and you want this repository to match it:
    ```
 7. If you created new files (wheel artifacts, lockfile updates, workflow), stage them in git before opening the PR.
 
+## Running GitHub Actions Locally
+
+- `act` ( [Docs](https://nektosact.com/) | [GitHub](https://github.com/nektos/act) ) enables you to run GitHub Actions locally via Docker. Example commands:
+
+   - Run a specific workflow: `act push --workflows ".github/workflows/publish-httpfs-to-pypi.yml"`
+   - Run just the build-and-test action on a workflow: `act push --workflows ".github/workflows/publish-vortex-to-pypi.yml" --job build-and-test`
+
 ## Pull Requests
 - Every PR must state which package(s) need to be built or published. Include a checklist near the top of the PR description and tick the ones that apply—for example:
   ```

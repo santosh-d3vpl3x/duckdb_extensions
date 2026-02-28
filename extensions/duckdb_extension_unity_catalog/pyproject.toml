@@ -1,6 +1,6 @@
 [project]
-name = "duckdb_extension_sqlite"
-description = "Duckdb sqlite extension"
+name = "duckdb_extension_unity_catalog"
+description = "Duckdb unity_catalog extension"
 requires-python = ">=3.9"
 license = {text = "MIT"}
 readme = "README.md"
@@ -44,4 +44,4 @@ require-runtime-dependencies = true
 dependencies = ["requests>=1.0.0", "duckdb"]
 
 [tool.extension_builder]
-extension_name = "sqlite_scanner"
+extension_name = "unity_catalog"
