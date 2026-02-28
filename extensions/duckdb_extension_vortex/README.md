@@ -38,4 +38,4 @@ print(
 
 ## License
 
-`duckdb-extension-{@cookiecutter.extension_name | replace("_","-") @}` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+`duckdb-extension-vortex` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
