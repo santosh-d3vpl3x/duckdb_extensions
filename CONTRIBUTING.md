@@ -76,7 +76,7 @@ When DuckDB publishes a new release and you want this repository to match it:
 
 - `act` ( [Docs](https://nektosact.com/) | [GitHub](https://github.com/nektos/act) ) enables you to run GitHub Actions locally via Docker. Example commands:
 
-   - Run a specific worklow: `act push --workflows ".github/workflows/publish-httpfs-to-pypi.yml"`
+   - Run a specific workflow: `act push --workflows ".github/workflows/publish-httpfs-to-pypi.yml"`
    - Run just the build-and-test action on a workflow: `act push --workflows ".github/workflows/publish-vortex-to-pypi.yml" --job build-and-test`
 
 ## Pull Requests
