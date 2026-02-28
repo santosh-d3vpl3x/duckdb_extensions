@@ -1,0 +1,7 @@
+# Local artifact server for upload-artifact/download-artifact actions 
+--artifact-server-path /tmp/act-artifacts
+# Override the default image runner to act-latest. These are ~500MB... the default is ~70GB!
+-P ubuntu-latest=catthehacker/ubuntu:act-latest
+-P ubuntu-24.04=catthehacker/ubuntu:act-latest
+# Restrict the test job matrix
+--matrix os:ubuntu-latest

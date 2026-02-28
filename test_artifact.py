@@ -1,4 +1,5 @@
 import os
+import logging
 
 import duckdb
 
@@ -16,3 +17,4 @@ def test_extensions():
                 AND installed=true""").fetchone()[0]
         == 1
     )
+    logging.getLogger().info(f"duckdb {extension=!r} installed")
