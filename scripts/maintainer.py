@@ -7,6 +7,7 @@ import gzip
 import hashlib
 import json
 import re
+import sys
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
@@ -15,15 +16,22 @@ from typing import Iterable, Sequence
 
 import click
 
+# Add repo root to path so we can import shared constants
 REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
+
+from checksum_constants import (
+    CHECKSUMS_MANIFEST_SCHEMA_VERSION,
+    DEFAULT_ARCHITECTURES,
+    EXTENSION_NAME_PATTERN,
+    get_checksums_manifest_path,
+)
+
 TEMPLATE_ROOT = REPO_ROOT / "templates" / "duckdb_extension_{@cookiecutter.extension_name@}"
 EXTENSIONS_ROOT = REPO_ROOT / "extensions"
 WORKFLOWS_ROOT = REPO_ROOT / ".github" / "workflows"
 THIRD_PARTY_LICENSES_PATH = REPO_ROOT / "THIRD_PARTY_LICENSES.md"
-CHECKSUMS_MANIFEST_PATH = REPO_ROOT / "extension_checksums.json"
-CHECKSUMS_MANIFEST_SCHEMA_VERSION = 1
-DEFAULT_ARCHITECTURES = ("osx_arm64", "linux_amd64", "linux_arm64", "osx_amd64", "windows_amd64")
-EXTENSION_NAME_PATTERN = re.compile(r"^[a-z0-9_]+$")
+CHECKSUMS_MANIFEST_PATH = get_checksums_manifest_path(REPO_ROOT)
 KNOWN_THIRD_PARTY_EXTENSIONS = {"motherduck"}
 MOTHERDUCK_TERMS_URL = "https://motherduck.com/terms-of-service/"
 
@@ -140,12 +148,20 @@ def write_checksums_manifest(manifest: dict) -> None:
 
 
 def compute_extension_sha256(duckdb_version: str, extension_name: str, architecture: str, timeout: int) -> str:
+    """Download extension and compute SHA-256 hash with streaming decompression."""
     url = f"https://extensions.duckdb.org/{duckdb_version}/{architecture}/{extension_name}.duckdb_extension.gz"
     request = urllib.request.Request(url, headers={"User-Agent": "duckdb-extensions-checksum-updater/1.0"})
+    digest = hashlib.sha256()
+    block_size = 65536
     with urllib.request.urlopen(request, timeout=timeout) as response:
-        compressed_bytes = response.read()
-    extension_bytes = gzip.decompress(compressed_bytes)
-    return hashlib.sha256(extension_bytes).hexdigest()
+        # Stream through gzip decompressor to avoid loading entire file into memory
+        decompressor = gzip.GzipFile(fileobj=response)
+        while True:
+            chunk = decompressor.read(block_size)
+            if not chunk:
+                break
+            digest.update(chunk)
+    return digest.hexdigest()
 
 
 def collect_checksum_coverage_issues(

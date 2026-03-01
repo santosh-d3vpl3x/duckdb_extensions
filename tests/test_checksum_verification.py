@@ -1,6 +1,137 @@
+import gzip
+import json
+import tempfile
+from pathlib import Path
+
 import pytest
 
 import add_extension_files as aef
+
+
+# --- Tests for _is_truthy ---
+
+
+def test_is_truthy_with_one():
+    assert aef._is_truthy("1") is True
+
+
+def test_is_truthy_with_true_mixed_case():
+    assert aef._is_truthy("True") is True
+    assert aef._is_truthy("TRUE") is True
+    assert aef._is_truthy("true") is True
+
+
+def test_is_truthy_with_yes():
+    assert aef._is_truthy("yes") is True
+    assert aef._is_truthy("YES") is True
+
+
+def test_is_truthy_with_on():
+    assert aef._is_truthy("on") is True
+    assert aef._is_truthy("ON") is True
+
+
+def test_is_truthy_with_whitespace():
+    assert aef._is_truthy("  1  ") is True
+    assert aef._is_truthy("  true  ") is True
+
+
+def test_is_truthy_returns_false_for_other_values():
+    assert aef._is_truthy("0") is False
+    assert aef._is_truthy("false") is False
+    assert aef._is_truthy("no") is False
+    assert aef._is_truthy("off") is False
+    assert aef._is_truthy("random") is False
+
+
+def test_is_truthy_returns_false_for_none():
+    assert aef._is_truthy(None) is False
+
+
+def test_is_truthy_returns_false_for_empty_string():
+    assert aef._is_truthy("") is False
+    assert aef._is_truthy("   ") is False
+
+
+# --- Tests for _load_checksums_manifest ---
+
+
+def test_load_checksums_manifest_raises_when_file_missing(tmp_path):
+    missing_path = tmp_path / "nonexistent.json"
+    with pytest.raises(RuntimeError, match="Checksums manifest not found"):
+        aef._load_checksums_manifest(missing_path)
+
+
+def test_load_checksums_manifest_raises_on_invalid_schema_version(tmp_path):
+    manifest_path = tmp_path / "checksums.json"
+    manifest_path.write_text(json.dumps({"schema_version": 999, "checksums": {}}))
+    with pytest.raises(RuntimeError, match="Unsupported checksums manifest schema version"):
+        aef._load_checksums_manifest(manifest_path)
+
+
+def test_load_checksums_manifest_raises_when_checksums_missing(tmp_path):
+    manifest_path = tmp_path / "checksums.json"
+    manifest_path.write_text(json.dumps({"schema_version": 1}))
+    with pytest.raises(RuntimeError, match="missing `checksums` object"):
+        aef._load_checksums_manifest(manifest_path)
+
+
+def test_load_checksums_manifest_raises_when_checksums_not_dict(tmp_path):
+    manifest_path = tmp_path / "checksums.json"
+    manifest_path.write_text(json.dumps({"schema_version": 1, "checksums": "invalid"}))
+    with pytest.raises(RuntimeError, match="missing `checksums` object"):
+        aef._load_checksums_manifest(manifest_path)
+
+
+def test_load_checksums_manifest_returns_checksums_on_valid_file(tmp_path):
+    manifest_path = tmp_path / "checksums.json"
+    expected_checksums = {"v1.0.0": {"ext": {"linux_amd64": "abc123"}}}
+    manifest_path.write_text(json.dumps({"schema_version": 1, "checksums": expected_checksums}))
+    result = aef._load_checksums_manifest(manifest_path)
+    assert result == expected_checksums
+
+
+# --- Tests for _extract_gzip_to_file_with_sha256 ---
+
+
+def test_extract_gzip_to_file_with_sha256_extracts_and_hashes(tmp_path):
+    # Create test content and compress it
+    test_content = b"Hello, DuckDB extension world!"
+    gz_path = tmp_path / "test.gz"
+    output_path = tmp_path / "test.out"
+
+    with gzip.open(gz_path, "wb") as f:
+        f.write(test_content)
+
+    # Extract and get hash
+    result_hash = aef._extract_gzip_to_file_with_sha256(gz_path, output_path)
+
+    # Verify extraction
+    assert output_path.read_bytes() == test_content
+
+    # Verify hash
+    import hashlib
+    expected_hash = hashlib.sha256(test_content).hexdigest()
+    assert result_hash == expected_hash
+
+
+def test_extract_gzip_to_file_with_sha256_handles_large_content(tmp_path):
+    # Test with content larger than the block size (65536)
+    test_content = b"x" * 100000
+    gz_path = tmp_path / "large.gz"
+    output_path = tmp_path / "large.out"
+
+    with gzip.open(gz_path, "wb") as f:
+        f.write(test_content)
+
+    result_hash = aef._extract_gzip_to_file_with_sha256(gz_path, output_path)
+
+    assert output_path.read_bytes() == test_content
+    import hashlib
+    assert result_hash == hashlib.sha256(test_content).hexdigest()
+
+
+# --- Tests for _validate_download_inputs ---
 
 
 def test_validate_download_inputs_accepts_supported_values():
@@ -80,3 +211,29 @@ def test_verify_download_checksum_allows_mismatch_with_breakglass(capsys):
     )
     captured = capsys.readouterr()
     assert "WARNING" in captured.out
+
+
+def test_verify_download_checksum_includes_sync_hint_on_missing():
+    checksums = {"v1.4.4": {"httpfs": {}}}
+    with pytest.raises(RuntimeError, match="sync-checksums"):
+        aef._verify_download_checksum(
+            checksums=checksums,
+            duckdb_version="v1.4.4",
+            extension_name="httpfs",
+            duckdb_arch="linux_amd64",
+            actual_sha256="a" * 64,
+            allow_unverified=False,
+        )
+
+
+def test_verify_download_checksum_includes_sync_hint_on_mismatch():
+    checksums = {"v1.4.4": {"httpfs": {"linux_amd64": "b" * 64}}}
+    with pytest.raises(RuntimeError, match="sync-checksums"):
+        aef._verify_download_checksum(
+            checksums=checksums,
+            duckdb_version="v1.4.4",
+            extension_name="httpfs",
+            duckdb_arch="linux_amd64",
+            actual_sha256="a" * 64,
+            allow_unverified=False,
+        )

@@ -3,28 +3,26 @@ import hashlib
 import json
 import os
 import pathlib
-import re
 from pathlib import Path
 from typing import Any
 
+from checksum_constants import (
+    CHECKSUMS_MANIFEST_SCHEMA_VERSION,
+    EXTENSION_NAME_PATTERN,
+    SUPPORTED_ARCHITECTURES,
+    get_checksums_manifest_path,
+)
+
 try:
     from hatchling.builders.hooks.plugin.interface import BuildHookInterface
-except ImportError:  # pragma: no cover - only relevant in test environments without hatchling
-    class BuildHookInterface:  # type: ignore[too-many-ancestors]
+except ImportError:  # pragma: no cover - hatchling unavailable in pytest without build deps
+    class BuildHookInterface:  # type: ignore[no-redef]
+        """Stub for test environments without hatchling installed."""
         pass
 
 
-CHECKSUMS_MANIFEST_PATH = Path(__file__).with_name("extension_checksums.json")
-CHECKSUMS_MANIFEST_SCHEMA_VERSION = 1
+CHECKSUMS_MANIFEST_PATH = get_checksums_manifest_path()
 ALLOW_UNVERIFIED_ENV = "DUCKDB_EXTENSIONS_ALLOW_UNVERIFIED"
-SUPPORTED_ARCHITECTURES = {
-    "linux_amd64",
-    "linux_arm64",
-    "osx_arm64",
-    "osx_amd64",
-    "windows_amd64",
-}
-EXTENSION_NAME_PATTERN = re.compile(r"^[a-z0-9_]+$")
 TRUTHY_VALUES = {"1", "true", "yes", "on"}
 
 
@@ -92,10 +90,13 @@ def _verify_download_checksum(
     extension_entry = version_entry.get(extension_name, {})
     expected_sha256 = extension_entry.get(duckdb_arch)
 
+    sync_hint = "Run `python scripts/maintainer.py sync-checksums --verify` to diagnose."
+
     if not expected_sha256:
         message = (
             "Missing checksum entry for "
-            f"{duckdb_version}/{extension_name}/{duckdb_arch} in {CHECKSUMS_MANIFEST_PATH.name}."
+            f"{duckdb_version}/{extension_name}/{duckdb_arch} in {CHECKSUMS_MANIFEST_PATH.name}. "
+            f"{sync_hint}"
         )
         if allow_unverified:
             print(f"WARNING: {message} Proceeding because {ALLOW_UNVERIFIED_ENV}=1.")
@@ -105,7 +106,8 @@ def _verify_download_checksum(
     if actual_sha256 != expected_sha256:
         message = (
             "Checksum mismatch for "
-            f"{duckdb_version}/{extension_name}/{duckdb_arch}: expected {expected_sha256}, got {actual_sha256}."
+            f"{duckdb_version}/{extension_name}/{duckdb_arch}: expected {expected_sha256}, got {actual_sha256}. "
+            f"{sync_hint}"
         )
         if allow_unverified:
             print(f"WARNING: {message} Proceeding because {ALLOW_UNVERIFIED_ENV}=1.")
