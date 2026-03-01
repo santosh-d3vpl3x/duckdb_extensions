@@ -110,3 +110,20 @@ When DuckDB publishes a new release and you want this repository to match it:
 - For checksum-managed extension builds, run `python scripts/maintainer.py sync-checksums --verify` after updating version pins and extension metadata.
 - For extension packaging changes, run `python scripts/maintainer.py verify-licensing` and include any `THIRD_PARTY_LICENSES.md` updates in the PR.
 - For release-related PRs (new DuckDB version or new extension) attach build logs or wheel hashes if you have them; they speed up code review.
+
+## AI Agent Instructions
+
+When asked to check for missing extensions or find new extensions to add:
+
+1. Fetch the official DuckDB extensions list from https://duckdb.org/docs/stable/core_extensions/overview
+2. Extract all extension names from the documentation table
+3. List current extensions in this repo:
+   ```bash
+   ls -d extensions/duckdb_extension_* | sed 's/extensions\/duckdb_extension_//'
+   ```
+4. Compare and report:
+   - **Missing:** Extensions in DuckDB docs but not in this repo
+   - **Extra:** Extensions in repo but not in docs (these may be aliases like `mysql_scanner` for `mysql`)
+   - **Coverage:** Number of supported extensions vs total available
+
+Note: Some extensions like `jemalloc` are platform-specific (Linux only) and may intentionally not be packaged. When adding a new extension, follow the "Adding a New Extension Package" section above.
