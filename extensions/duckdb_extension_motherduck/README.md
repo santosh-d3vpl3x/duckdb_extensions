@@ -36,4 +36,8 @@ print(
 
 ## License
 
-`duckdb-extension-motherduck` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+The `duckdb-extension-motherduck` wrapper/package code in this repository is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+
+Bundled `motherduck` extension binaries are provided by MotherDuck and governed by upstream MotherDuck terms. They are not relicensed by this repository.
+
+See [MotherDuck Terms of Service](https://motherduck.com/terms-of-service/) and [THIRD_PARTY_LICENSES.md](../../THIRD_PARTY_LICENSES.md).

@@ -29,6 +29,10 @@ Thanks for helping grow the DuckDB Extensions ecosystem! This guide explains how
   uv tool run hatch build -t wheel
   ```
   Inside an extension workspace you can target a specific architecture, e.g. `uv tool run hatch build -t wheel linux_amd64`.
+- Verify licensing provenance notes are up to date:
+  ```bash
+  python scripts/maintainer.py verify-licensing
+  ```
 
 ## Updating the DuckDB Runtime Version
 When DuckDB publishes a new release and you want this repository to match it:
@@ -60,17 +64,20 @@ When DuckDB publishes a new release and you want this repository to match it:
 3. Review the generated `pyproject.toml`:
    - `dependencies` must pin the current DuckDB version.
    - `[tool.extension_builder].extension_name` must match the DuckDB `INSTALL` name.
-4. If the new extension needs additional documentation (for example, usage nuances), update `README.md` and `USER_GUIDE.md` accordingly.
-5. Build a wheel to download and bundle the binaries:
+4. Update licensing provenance:
+   - Add or update the extension row in `THIRD_PARTY_LICENSES.md`.
+   - If the extension has non-default upstream licensing/terms, update the extension `README.md` `License` section to clearly distinguish wrapper/package license vs bundled binary terms.
+5. If the new extension needs additional documentation (for example, usage nuances), update `README.md` and `USER_GUIDE.md` accordingly.
+6. Build a wheel to download and bundle the binaries:
    ```bash
    cd extensions/duckdb_extension_<extension_alias>
    uv tool run hatch build -t wheel linux_amd64
    ```
-6. Run the test suite for the new extension:
+7. Run the test suite for the new extension:
    ```bash
    EXTENSION_NAME=<extension_alias> uv run pytest test_artifact.py
    ```
-7. If you created new files (wheel artifacts, lockfile updates, workflow), stage them in git before opening the PR.
+8. If you created new files (wheel artifacts, lockfile updates, workflow), stage them in git before opening the PR.
 
 ## Running GitHub Actions Locally
 
@@ -88,4 +95,5 @@ When DuckDB publishes a new release and you want this repository to match it:
   ```
 - Keep PRs focused and include documentation updates when behaviour changes.
 - Ensure tests pass locally for every extension you touched (`EXTENSION_NAME=<name> uv run pytest test_artifact.py`).
+- For extension packaging changes, run `python scripts/maintainer.py verify-licensing` and include any `THIRD_PARTY_LICENSES.md` updates in the PR.
 - For release-related PRs (new DuckDB version or new extension) attach build logs or wheel hashes if you have them; they speed up code review.

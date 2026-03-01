@@ -9,7 +9,7 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 ## Table of Contents
 
 - [Installation](#installation)
-- [License](#license)
+- [Licensing](#licensing)
 
 ## Available extensions
 - [duckdb_extension_autocomplete](extensions/duckdb_extension_autocomplete)
@@ -79,6 +79,8 @@ print(
 )
 ```
 
-## License
+## Licensing
 
-`duckdb-extensions` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+- `duckdb-extensions` repository code and wrapper/package code are distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
+- Bundled extension binaries are downloaded from upstream providers and may be governed by different licenses or terms.
+- See [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md) for extension-by-extension provenance and upstream terms references.

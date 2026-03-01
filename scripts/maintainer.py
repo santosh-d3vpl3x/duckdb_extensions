@@ -14,6 +14,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 TEMPLATE_ROOT = REPO_ROOT / "templates" / "duckdb_extension_{@cookiecutter.extension_name@}"
 EXTENSIONS_ROOT = REPO_ROOT / "extensions"
 WORKFLOWS_ROOT = REPO_ROOT / ".github" / "workflows"
+THIRD_PARTY_LICENSES_PATH = REPO_ROOT / "THIRD_PARTY_LICENSES.md"
+KNOWN_THIRD_PARTY_EXTENSIONS = {"motherduck"}
+MOTHERDUCK_TERMS_URL = "https://motherduck.com/terms-of-service/"
 
 
 @dataclass
@@ -68,6 +71,56 @@ def replace_pattern(path: Path, pattern: str, replacement: str, dry_run: bool) -
 def iter_extension_pyprojects() -> Iterable[Path]:
     for pyproject in sorted(EXTENSIONS_ROOT.glob("duckdb_extension_*/pyproject.toml")):
         yield pyproject
+
+
+def iter_extension_aliases() -> Iterable[str]:
+    for pyproject in iter_extension_pyprojects():
+        yield pyproject.parent.name.removeprefix("duckdb_extension_")
+
+
+def collect_licensing_issues() -> list[str]:
+    issues: list[str] = []
+
+    if not THIRD_PARTY_LICENSES_PATH.exists():
+        return [f"Missing required file: {THIRD_PARTY_LICENSES_PATH.relative_to(REPO_ROOT)}"]
+
+    registry_text = read_text(THIRD_PARTY_LICENSES_PATH)
+    root_readme_text = read_text(REPO_ROOT / "README.md")
+    contributing_text = read_text(REPO_ROOT / "CONTRIBUTING.md")
+
+    for alias in iter_extension_aliases():
+        registry_marker = f"| {alias} |"
+        if registry_marker not in registry_text:
+            issues.append(f"Missing {registry_marker} entry in {THIRD_PARTY_LICENSES_PATH.relative_to(REPO_ROOT)}")
+
+    if "THIRD_PARTY_LICENSES.md" not in root_readme_text:
+        issues.append("README.md must reference THIRD_PARTY_LICENSES.md")
+
+    if "verify-licensing" not in contributing_text:
+        issues.append("CONTRIBUTING.md must include verify-licensing guidance")
+
+    for alias in sorted(KNOWN_THIRD_PARTY_EXTENSIONS):
+        extension_root = EXTENSIONS_ROOT / f"duckdb_extension_{alias}"
+        readme_path = extension_root / "README.md"
+        pyproject_path = extension_root / "pyproject.toml"
+
+        if not readme_path.exists():
+            issues.append(f"Missing README for third-party extension: {readme_path.relative_to(REPO_ROOT)}")
+        else:
+            readme_text = read_text(readme_path)
+            if "THIRD_PARTY_LICENSES.md" not in readme_text:
+                issues.append(f"{readme_path.relative_to(REPO_ROOT)} must link THIRD_PARTY_LICENSES.md")
+            if alias == "motherduck" and MOTHERDUCK_TERMS_URL not in readme_text:
+                issues.append(f"{readme_path.relative_to(REPO_ROOT)} must reference {MOTHERDUCK_TERMS_URL}")
+
+        if not pyproject_path.exists():
+            issues.append(f"Missing pyproject for third-party extension: {pyproject_path.relative_to(REPO_ROOT)}")
+        else:
+            pyproject_text = read_text(pyproject_path)
+            if "THIRD_PARTY_LICENSES.md" not in pyproject_text:
+                issues.append(f"{pyproject_path.relative_to(REPO_ROOT)} must reference THIRD_PARTY_LICENSES.md in license metadata")
+
+    return issues
 
 
 def update_readme_extensions(alias: str, dry_run: bool) -> bool:
@@ -223,7 +276,20 @@ def add_extension(alias: str, dry_run: bool) -> None:
     click.echo("Scaffold created. Follow up with:")
     click.echo(f"  - inspect extensions/duckdb_extension_{alias}/pyproject.toml")
     click.echo(f"  - run `EXTENSION_NAME={alias} uv run pytest test_artifact.py`")
+    click.echo("  - update THIRD_PARTY_LICENSES.md and run `python scripts/maintainer.py verify-licensing`")
     click.echo("  - commit the new files and open a PR (remember the package checklist)")
+
+
+@cli.command("verify-licensing")
+def verify_licensing_cmd() -> None:
+    """Verify extension licensing provenance metadata and links."""
+    issues = collect_licensing_issues()
+    if issues:
+        click.echo("Licensing checks failed:")
+        for issue in issues:
+            click.echo(f"  - {issue}")
+        raise click.ClickException("Fix the licensing issues above and run verify-licensing again.")
+    click.echo("Licensing checks passed.")
 
 
 if __name__ == "__main__":
