@@ -9,6 +9,7 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 ## Table of Contents
 
 - [Installation](#installation)
+- [Release cadence](#release-cadence)
 - [Licensing](#licensing)
 
 ## Available extensions
@@ -51,6 +52,16 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 - `windows_amd64`
 
 Compatible with `duckdb==1.4.4`
+
+## Release cadence
+This repository does not publish on every upstream DuckDB extension commit.
+
+For a change (for example in `duckdb-excel`) to show up here:
+1. The change must be included in DuckDB's published extension artifact for a specific DuckDB version.
+2. This repository must bump to that same DuckDB version and publish a new tag.
+
+CI builds run on pushes and pull requests, but PyPI publishing happens only for tagged releases in this repository.
+Maintainer steps for version bumps are documented in [CONTRIBUTING.md](CONTRIBUTING.md#updating-the-duckdb-runtime-version).
 
 ## Installation
 First install `duckdb-extensions`.
