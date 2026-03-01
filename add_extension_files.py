@@ -53,7 +53,7 @@ def _load_checksums_manifest(path: Path = CHECKSUMS_MANIFEST_PATH) -> dict[str, 
     if not path.exists():
         raise RuntimeError(
             f"Checksums manifest not found: {path}. "
-            f"Generate it with `python scripts/maintainer.py update-checksums`."
+            f"Generate it with `python scripts/maintainer.py sync-checksums`."
         )
     manifest = json.loads(path.read_text(encoding="utf-8"))
     if manifest.get("schema_version") != CHECKSUMS_MANIFEST_SCHEMA_VERSION:
