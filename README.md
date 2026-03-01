@@ -10,6 +10,7 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 
 - [Installation](#installation)
 - [Release cadence](#release-cadence)
+- [Artifact integrity checks](#artifact-integrity-checks)
 - [Licensing](#licensing)
 
 ## Available extensions
@@ -62,6 +63,13 @@ For a change (for example in `duckdb-excel`) to show up here:
 
 CI builds run on pushes and pull requests, but PyPI publishing happens only for tagged releases in this repository.
 Maintainer steps for version bumps are documented in [CONTRIBUTING.md](CONTRIBUTING.md#updating-the-duckdb-runtime-version).
+
+## Artifact integrity checks
+
+- Release builds verify SHA-256 checksums for downloaded extension binaries using [`extension_checksums.json`](extension_checksums.json).
+- If checksums are missing or mismatched, the build fails.
+- Local developer breakglass is available via `DUCKDB_EXTENSIONS_ALLOW_UNVERIFIED=1` for emergency debugging only.
+- Breakglass is blocked in GitHub Actions to ensure published artifacts are always checksum-verified.
 
 ## Installation
 First install `duckdb-extensions`.

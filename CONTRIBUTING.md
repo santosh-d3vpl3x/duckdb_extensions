@@ -29,6 +29,10 @@ Thanks for helping grow the DuckDB Extensions ecosystem! This guide explains how
   uv tool run hatch build -t wheel
   ```
   Inside an extension workspace you can target a specific architecture, e.g. `uv tool run hatch build -t wheel linux_amd64`.
+- Verify checksum coverage for the active DuckDB version:
+  ```bash
+  python scripts/maintainer.py verify-checksums
+  ```
 - Verify licensing provenance notes are up to date:
   ```bash
   python scripts/maintainer.py verify-licensing
@@ -48,11 +52,16 @@ When DuckDB publishes a new release and you want this repository to match it:
    uv sync
    ```
 3. Rebuild the wheels (at least once per architecture you can exercise locally) so `add_extension_files.py` downloads the new binaries.
-4. Run the tests with one or more extensions to verify the build:
+4. Refresh checksum manifest entries for the new DuckDB version:
+   ```bash
+   python scripts/maintainer.py update-checksums --duckdb-version <new_version>
+   python scripts/maintainer.py verify-checksums --duckdb-version <new_version>
+   ```
+5. Run the tests with one or more extensions to verify the build:
    ```bash
    EXTENSION_NAME=httpfs uv run pytest test_artifact.py
    ```
-5. Double-check any additional docs that mention the old version (`USER_GUIDE.md`, release notes, etc.).
+6. Double-check any additional docs that mention the old version (`USER_GUIDE.md`, release notes, etc.).
 
 ## Adding a New Extension Package
 1. Confirm the extension exists on DuckDB’s extension server (`https://extensions.duckdb.org/<duckdb_version>/<arch>/<extension>.duckdb_extension.gz`) and decide on the Python package alias (usually the DuckDB alias).
@@ -67,17 +76,22 @@ When DuckDB publishes a new release and you want this repository to match it:
 4. Update licensing provenance:
    - Add or update the extension row in `THIRD_PARTY_LICENSES.md`.
    - If the extension has non-default upstream licensing/terms, update the extension `README.md` `License` section to clearly distinguish wrapper/package license vs bundled binary terms.
-5. If the new extension needs additional documentation (for example, usage nuances), update `README.md` and `USER_GUIDE.md` accordingly.
-6. Build a wheel to download and bundle the binaries:
+5. Refresh checksum entries for the new extension:
+   ```bash
+   python scripts/maintainer.py update-checksums --extensions <extension_alias>
+   python scripts/maintainer.py verify-checksums --extensions <extension_alias>
+   ```
+6. If the new extension needs additional documentation (for example, usage nuances), update `README.md` and `USER_GUIDE.md` accordingly.
+7. Build a wheel to download and bundle the binaries:
    ```bash
    cd extensions/duckdb_extension_<extension_alias>
    uv tool run hatch build -t wheel linux_amd64
    ```
-7. Run the test suite for the new extension:
+8. Run the test suite for the new extension:
    ```bash
    EXTENSION_NAME=<extension_alias> uv run pytest test_artifact.py
    ```
-8. If you created new files (wheel artifacts, lockfile updates, workflow), stage them in git before opening the PR.
+9. If you created new files (wheel artifacts, lockfile updates, workflow), stage them in git before opening the PR.
 
 ## Running GitHub Actions Locally
 
@@ -95,5 +109,6 @@ When DuckDB publishes a new release and you want this repository to match it:
   ```
 - Keep PRs focused and include documentation updates when behaviour changes.
 - Ensure tests pass locally for every extension you touched (`EXTENSION_NAME=<name> uv run pytest test_artifact.py`).
+- For checksum-managed extension builds, run `python scripts/maintainer.py verify-checksums` after updating version pins and extension metadata.
 - For extension packaging changes, run `python scripts/maintainer.py verify-licensing` and include any `THIRD_PARTY_LICENSES.md` updates in the PR.
 - For release-related PRs (new DuckDB version or new extension) attach build logs or wheel hashes if you have them; they speed up code review.
