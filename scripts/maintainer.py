@@ -3,18 +3,35 @@
 
 from __future__ import annotations
 
+import gzip
+import hashlib
+import json
 import re
+import sys
+import urllib.error
+import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, Sequence
 
 import click
 
+# Add repo root to path so we can import shared constants
 REPO_ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(REPO_ROOT))
+
+from checksum_constants import (
+    CHECKSUMS_MANIFEST_SCHEMA_VERSION,
+    DEFAULT_ARCHITECTURES,
+    EXTENSION_NAME_PATTERN,
+    get_checksums_manifest_path,
+)
+
 TEMPLATE_ROOT = REPO_ROOT / "templates" / "duckdb_extension_{@cookiecutter.extension_name@}"
 EXTENSIONS_ROOT = REPO_ROOT / "extensions"
 WORKFLOWS_ROOT = REPO_ROOT / ".github" / "workflows"
 THIRD_PARTY_LICENSES_PATH = REPO_ROOT / "THIRD_PARTY_LICENSES.md"
+CHECKSUMS_MANIFEST_PATH = get_checksums_manifest_path(REPO_ROOT)
 KNOWN_THIRD_PARTY_EXTENSIONS = {"motherduck"}
 MOTHERDUCK_TERMS_URL = "https://motherduck.com/terms-of-service/"
 
@@ -76,6 +93,207 @@ def iter_extension_pyprojects() -> Iterable[Path]:
 def iter_extension_aliases() -> Iterable[str]:
     for pyproject in iter_extension_pyprojects():
         yield pyproject.parent.name.removeprefix("duckdb_extension_")
+
+
+def normalize_duckdb_version(version: str) -> str:
+    normalized = version.strip()
+    if not normalized:
+        raise click.ClickException("DuckDB version cannot be empty.")
+    return normalized if normalized.startswith("v") else f"v{normalized}"
+
+
+def parse_csv_items(value: str) -> list[str]:
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
+def get_extension_download_name(pyproject_path: Path) -> str:
+    match = re.search(r'^extension_name\s*=\s*"([^"]+)"', read_text(pyproject_path), flags=re.MULTILINE)
+    if not match:
+        raise click.ClickException(f"Unable to find tool.extension_builder.extension_name in {pyproject_path.relative_to(REPO_ROOT)}")
+    extension_name = match.group(1).strip()
+    if not EXTENSION_NAME_PATTERN.fullmatch(extension_name):
+        raise click.ClickException(
+            f"Invalid extension_name {extension_name!r} in {pyproject_path.relative_to(REPO_ROOT)}; "
+            f"must match {EXTENSION_NAME_PATTERN.pattern!r}."
+        )
+    return extension_name
+
+
+def get_alias_to_download_name_map() -> dict[str, str]:
+    mapping: dict[str, str] = {}
+    for pyproject in iter_extension_pyprojects():
+        alias = pyproject.parent.name.removeprefix("duckdb_extension_")
+        mapping[alias] = get_extension_download_name(pyproject)
+    return mapping
+
+
+def load_checksums_manifest() -> dict:
+    if not CHECKSUMS_MANIFEST_PATH.exists():
+        return {"schema_version": CHECKSUMS_MANIFEST_SCHEMA_VERSION, "checksums": {}}
+    manifest = json.loads(read_text(CHECKSUMS_MANIFEST_PATH))
+    schema_version = manifest.get("schema_version")
+    if schema_version != CHECKSUMS_MANIFEST_SCHEMA_VERSION:
+        raise click.ClickException(
+            f"Unsupported checksums manifest schema version {schema_version!r}. "
+            f"Expected {CHECKSUMS_MANIFEST_SCHEMA_VERSION}."
+        )
+    if not isinstance(manifest.get("checksums"), dict):
+        raise click.ClickException(f"{CHECKSUMS_MANIFEST_PATH.relative_to(REPO_ROOT)} is missing a valid `checksums` object.")
+    return manifest
+
+
+def write_checksums_manifest(manifest: dict) -> None:
+    content = json.dumps(manifest, indent=2, sort_keys=True)
+    write_text(CHECKSUMS_MANIFEST_PATH, f"{content}\n")
+
+
+def compute_extension_sha256(duckdb_version: str, extension_name: str, architecture: str, timeout: int) -> str:
+    """Download extension and compute SHA-256 hash with streaming decompression."""
+    url = f"https://extensions.duckdb.org/{duckdb_version}/{architecture}/{extension_name}.duckdb_extension.gz"
+    request = urllib.request.Request(url, headers={"User-Agent": "duckdb-extensions-checksum-updater/1.0"})
+    digest = hashlib.sha256()
+    block_size = 65536
+    with urllib.request.urlopen(request, timeout=timeout) as response:
+        # Stream through gzip decompressor to avoid loading entire file into memory
+        decompressor = gzip.GzipFile(fileobj=response)
+        while True:
+            chunk = decompressor.read(block_size)
+            if not chunk:
+                break
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def collect_checksum_coverage_issues(
+    manifest: dict,
+    duckdb_version: str,
+    extension_names: Sequence[str],
+    architectures: Sequence[str],
+) -> list[str]:
+    issues: list[str] = []
+    checksums = manifest.get("checksums", {})
+    version_checksums = checksums.get(duckdb_version, {})
+    if not version_checksums:
+        issues.append(f"No checksum entries found for DuckDB version {duckdb_version}.")
+        return issues
+
+    for extension_name in extension_names:
+        extension_entry = version_checksums.get(extension_name)
+        if not isinstance(extension_entry, dict) or not extension_entry:
+            issues.append(f"Missing checksum map for extension {extension_name!r} at version {duckdb_version}.")
+            continue
+        found_selected_architecture = False
+        for architecture in architectures:
+            digest = extension_entry.get(architecture)
+            if digest is None:
+                continue
+            found_selected_architecture = True
+            if not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest):
+                issues.append(
+                    f"Invalid checksum for {duckdb_version}/{extension_name}/{architecture} "
+                    f"in {CHECKSUMS_MANIFEST_PATH.relative_to(REPO_ROOT)}."
+                )
+        if not found_selected_architecture:
+            issues.append(
+                f"No checksum entries for selected architectures for {duckdb_version}/{extension_name}. "
+                "Run sync-checksums with a supported architecture list."
+            )
+    return issues
+
+
+def resolve_selected_extension_names(extensions: str) -> list[str]:
+    alias_to_name = get_alias_to_download_name_map()
+    known_download_names = set(alias_to_name.values())
+    if extensions.strip().lower() == "all":
+        return sorted(known_download_names)
+
+    selected_extension_names: list[str] = []
+    for item in parse_csv_items(extensions):
+        if item in alias_to_name:
+            selected_extension_names.append(alias_to_name[item])
+        elif item in known_download_names:
+            selected_extension_names.append(item)
+        else:
+            raise click.ClickException(f"Unknown extension alias/name: {item}")
+    return sorted(set(selected_extension_names))
+
+
+def refresh_checksums(
+    duckdb_version: str,
+    extension_names: Sequence[str],
+    architectures: Sequence[str],
+    timeout: int,
+    dry_run: bool,
+) -> tuple[int, int, dict]:
+    manifest = load_checksums_manifest()
+    checksums = manifest.setdefault("checksums", {})
+    version_checksums = checksums.setdefault(duckdb_version, {})
+    updates = 0
+    missing = 0
+
+    click.echo(
+        f"Refreshing checksums for DuckDB {duckdb_version}: "
+        f"{len(extension_names)} extensions x {len(architectures)} architectures"
+    )
+    for extension_name in extension_names:
+        extension_checksums = version_checksums.setdefault(extension_name, {})
+        if not isinstance(extension_checksums, dict):
+            raise click.ClickException(
+                f"Invalid checksum map for {duckdb_version}/{extension_name} in {CHECKSUMS_MANIFEST_PATH.relative_to(REPO_ROOT)}."
+            )
+        for architecture in architectures:
+            try:
+                digest = compute_extension_sha256(duckdb_version, extension_name, architecture, timeout=timeout)
+            except urllib.error.HTTPError as error:
+                if error.code != 404:
+                    raise click.ClickException(
+                        f"Failed downloading {duckdb_version}/{extension_name}/{architecture}: HTTP {error.code}"
+                    ) from error
+                if architecture in extension_checksums:
+                    del extension_checksums[architecture]
+                    updates += 1
+                missing += 1
+                click.echo(f"  {'missing':9} {duckdb_version}/{extension_name}/{architecture} (upstream 404)")
+                continue
+            previous = extension_checksums.get(architecture)
+            changed = previous != digest
+            extension_checksums[architecture] = digest
+            status = "updated" if changed else "unchanged"
+            click.echo(f"  {status:9} {duckdb_version}/{extension_name}/{architecture} -> {digest}")
+            if changed:
+                updates += 1
+
+    if dry_run:
+        click.echo(f"\nDry run: {updates} checksum entries would change; {missing} upstream artifacts unavailable.")
+    else:
+        manifest["schema_version"] = CHECKSUMS_MANIFEST_SCHEMA_VERSION
+        write_checksums_manifest(manifest)
+        click.echo(
+            f"\nWrote {CHECKSUMS_MANIFEST_PATH.relative_to(REPO_ROOT)} "
+            f"({updates} updated entries, {missing} upstream artifacts unavailable)."
+        )
+
+    return updates, missing, manifest
+
+
+def verify_checksum_coverage(
+    manifest: dict,
+    duckdb_version: str,
+    extension_names: Sequence[str],
+    architectures: Sequence[str],
+) -> None:
+    issues = collect_checksum_coverage_issues(
+        manifest=manifest,
+        duckdb_version=duckdb_version,
+        extension_names=extension_names,
+        architectures=architectures,
+    )
+    if issues:
+        click.echo("Checksum coverage checks failed:")
+        for issue in issues:
+            click.echo(f"  - {issue}")
+        raise click.ClickException("Fix checksum issues and run `sync-checksums --verify` again.")
+    click.echo("Checksum coverage checks passed.")
 
 
 def collect_licensing_issues() -> list[str]:
@@ -199,7 +417,12 @@ def cli() -> None:
 @cli.command("bump-version")
 @click.argument("new_version")
 @click.option("--dry-run", is_flag=True, help="Show the changes without writing files.")
-def bump_version(new_version: str, dry_run: bool) -> None:
+@click.option(
+    "--skip-checksums",
+    is_flag=True,
+    help="Skip automatic checksum refresh/verification (offline or emergency use).",
+)
+def bump_version(new_version: str, dry_run: bool, skip_checksums: bool) -> None:
     """Update all version pins to NEW_VERSION."""
     current_version = get_current_version()
     if new_version == current_version:
@@ -237,10 +460,99 @@ def bump_version(new_version: str, dry_run: bool) -> None:
         for change in changes:
             click.echo(f"{'[dry-run]' if dry_run else 'updated'} {change.path.relative_to(REPO_ROOT)}")
 
+    normalized_version = normalize_duckdb_version(new_version)
+    if dry_run:
+        click.echo()
+        click.echo("Dry-run mode: skipped checksum refresh and verification.")
+    elif skip_checksums:
+        click.echo()
+        click.echo(
+            "Skipped automatic checksum refresh/verification due to --skip-checksums. "
+            "Run the commands below before publishing."
+        )
+    else:
+        click.echo()
+        click.echo("Syncing extension checksums...")
+        sync_checksums_cmd(
+            duckdb_version=normalized_version,
+            extensions="all",
+            architectures=",".join(DEFAULT_ARCHITECTURES),
+            timeout=30,
+            dry_run=False,
+            verify=False,
+        )
+        click.echo("Checksum sync completed.")
+
     click.echo()
     click.echo("Next steps:")
     click.echo("  - run `uv lock --upgrade-package duckdb` to refresh uv.lock")
+    if skip_checksums:
+        click.echo("  - run `python scripts/maintainer.py sync-checksums --duckdb-version "
+                   f"{normalized_version}`")
     click.echo("  - rebuild and test the extensions before publishing")
+
+
+@cli.command("sync-checksums")
+@click.option(
+    "--duckdb-version",
+    default=None,
+    help="DuckDB version to sync (e.g. v1.4.4 or 1.4.4). Defaults to current project version.",
+)
+@click.option(
+    "--extensions",
+    default="all",
+    help="Comma-separated extension aliases (or extension names). Default: all extension workspaces.",
+)
+@click.option(
+    "--architectures",
+    default=",".join(DEFAULT_ARCHITECTURES),
+    help="Comma-separated architectures to include.",
+)
+@click.option("--timeout", default=30, type=int, show_default=True, help="Download timeout in seconds.")
+@click.option("--dry-run", is_flag=True, help="Compute and print updates without writing files.")
+@click.option("--verify", is_flag=True, help="Only verify coverage; do not download or write.")
+def sync_checksums_cmd(
+    duckdb_version: str | None,
+    extensions: str,
+    architectures: str,
+    timeout: int,
+    dry_run: bool,
+    verify: bool,
+) -> None:
+    """Sync extension_checksums.json, or verify coverage in read-only mode."""
+    version = normalize_duckdb_version(duckdb_version or get_current_version())
+    selected_architectures = parse_csv_items(architectures)
+    if not selected_architectures:
+        raise click.ClickException("At least one architecture is required.")
+    if dry_run and verify:
+        raise click.ClickException("--dry-run cannot be combined with --verify.")
+
+    selected_extension_names = resolve_selected_extension_names(extensions)
+
+    if verify:
+        verify_checksum_coverage(
+            manifest=load_checksums_manifest(),
+            duckdb_version=version,
+            extension_names=selected_extension_names,
+            architectures=selected_architectures,
+        )
+        return
+
+    _, _, manifest = refresh_checksums(
+        duckdb_version=version,
+        extension_names=selected_extension_names,
+        architectures=selected_architectures,
+        timeout=timeout,
+        dry_run=dry_run,
+    )
+    if dry_run:
+        return
+    verify_checksum_coverage(
+        manifest=manifest,
+        duckdb_version=version,
+        extension_names=selected_extension_names,
+        architectures=selected_architectures,
+    )
 
 
 @cli.command("add-extension")
@@ -276,6 +588,8 @@ def add_extension(alias: str, dry_run: bool) -> None:
     click.echo("Scaffold created. Follow up with:")
     click.echo(f"  - inspect extensions/duckdb_extension_{alias}/pyproject.toml")
     click.echo(f"  - run `EXTENSION_NAME={alias} uv run pytest test_artifact.py`")
+    click.echo("  - run `python scripts/maintainer.py sync-checksums --extensions "
+               f"{alias} --duckdb-version {normalize_duckdb_version(get_current_version())}`")
     click.echo("  - update THIRD_PARTY_LICENSES.md and run `python scripts/maintainer.py verify-licensing`")
     click.echo("  - commit the new files and open a PR (remember the package checklist)")
 
