@@ -4,7 +4,7 @@
 This repository publishes the official DuckDB extensions as Python wheels so they can be installed directly from PyPI. The top-level package `duckdb-extensions` exposes a helper, `duckdb_extensions.import_extension`, that downloads the right binary for your DuckDB build and loads it into the current connection. Individual extension wheels (`duckdb-extension-httpfs`, `duckdb-extension-postgres`, …) bundle the compiled `.duckdb_extension` artifacts that DuckDB normally serves via `INSTALL`.
 
 ## Prerequisites
-- Python 3.9 or newer
+- Python 3.10 or newer
 - `pip`, `uv`, or another PEP 517 compatible installer
 
 The published wheels already include the compiled DuckDB extension files, so no extra network access is required beyond downloading the packages themselves.
