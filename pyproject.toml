@@ -2,7 +2,7 @@
 name = "duckdb_extensions"
 description = "DuckDB extensions as python package"
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = {text = "MIT"}
 keywords = []
 authors = [
@@ -21,7 +21,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
-    "duckdb==1.4.4",
+    "duckdb==1.5.0",
     "importlib-resources>=3.0.0;python_version<'3.9'",
 ]
 dynamic = ["version"]
