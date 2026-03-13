@@ -3,27 +3,34 @@ import hashlib
 import json
 import os
 import pathlib
+import re
+import shutil
 from pathlib import Path
 from typing import Any
 
-from checksum_constants import (
-    CHECKSUMS_MANIFEST_SCHEMA_VERSION,
-    EXTENSION_NAME_PATTERN,
-    SUPPORTED_ARCHITECTURES,
-    get_checksums_manifest_path,
-)
+from hatchling.builders.hooks.plugin.interface import BuildHookInterface
 
-try:
-    from hatchling.builders.hooks.plugin.interface import BuildHookInterface
-except ImportError:  # pragma: no cover - hatchling unavailable in pytest without build deps
-    class BuildHookInterface:  # type: ignore[no-redef]
-        """Stub for test environments without hatchling installed."""
-        pass
-
-
-CHECKSUMS_MANIFEST_PATH = get_checksums_manifest_path()
+CHECKSUMS_MANIFEST_SCHEMA_VERSION = 1
+CHECKSUMS_MANIFEST_FILENAME = "extension_checksums.json"
+EXTENSION_NAME_PATTERN = re.compile(r"^[a-z0-9_]+$")
+SUPPORTED_ARCHITECTURES = frozenset({
+    "linux_amd64",
+    "linux_arm64",
+    "osx_arm64",
+    "osx_amd64",
+    "windows_amd64",
+})
 ALLOW_UNVERIFIED_ENV = "DUCKDB_EXTENSIONS_ALLOW_UNVERIFIED"
 TRUTHY_VALUES = {"1", "true", "yes", "on"}
+
+
+def get_checksums_manifest_path(project_root: str | Path) -> Path:
+    project_root = Path(project_root).resolve()
+    for candidate_root in (project_root, *project_root.parents):
+        manifest_path = candidate_root / CHECKSUMS_MANIFEST_FILENAME
+        if manifest_path.exists():
+            return manifest_path
+    return project_root / CHECKSUMS_MANIFEST_FILENAME
 
 
 def _is_truthy(value: str | None) -> bool:
@@ -47,11 +54,11 @@ def _validate_download_inputs(duckdb_arch: str, extension_name: str) -> None:
         raise ValueError(f"Invalid extension name {extension_name!r}. Expected pattern {EXTENSION_NAME_PATTERN.pattern!r}.")
 
 
-def _load_checksums_manifest(path: Path = CHECKSUMS_MANIFEST_PATH) -> dict[str, Any]:
+def _load_checksums_manifest(path: Path) -> dict[str, Any]:
     if not path.exists():
         raise RuntimeError(
             f"Checksums manifest not found: {path}. "
-            f"Generate it with `python scripts/maintainer.py sync-checksums`."
+            "Generate it with `python scripts/maintainer.py sync-checksums`."
         )
     manifest = json.loads(path.read_text(encoding="utf-8"))
     if manifest.get("schema_version") != CHECKSUMS_MANIFEST_SCHEMA_VERSION:
@@ -95,7 +102,7 @@ def _verify_download_checksum(
     if not expected_sha256:
         message = (
             "Missing checksum entry for "
-            f"{duckdb_version}/{extension_name}/{duckdb_arch} in {CHECKSUMS_MANIFEST_PATH.name}. "
+            f"{duckdb_version}/{extension_name}/{duckdb_arch} in {CHECKSUMS_MANIFEST_FILENAME}. "
             f"{sync_hint}"
         )
         if allow_unverified:
@@ -115,9 +122,10 @@ def _verify_download_checksum(
         raise RuntimeError(message)
 
 
-class CustomBuildHook(BuildHookInterface):
-    def initialize(self, version: str, build_data: dict[str, Any]):
-        # Import here to avoid module-level import before dependencies are installed
+class DuckDBExtensionBuildHook(BuildHookInterface):
+    PLUGIN_NAME = "duckdb_extension"
+
+    def initialize(self, version: str, build_data: dict[str, Any]) -> None:
         import duckdb
 
         duckdb_version = duckdb.sql("PRAGMA version;").fetchone()[0]
@@ -127,13 +135,13 @@ class CustomBuildHook(BuildHookInterface):
             duckdb_arch = duckdb.sql("PRAGMA platform;").fetchone()[0]
 
         root_name = self.metadata.name.replace("-", "_")
-        download_dir = Path("src") / root_name / "extensions"
+        download_dir = Path(self.root) / "src" / root_name / "extensions"
 
         self.download_extensions(duckdb_arch, duckdb_version, download_dir)
-        CustomBuildHook.add_tag(build_data, duckdb_arch)
-        CustomBuildHook.include_files(self, build_data, duckdb_arch, duckdb_version, download_dir)
+        self.add_tag(build_data, duckdb_arch)
+        self.include_files(build_data, duckdb_arch, duckdb_version, download_dir)
 
-    def include_files(self, build_data, duckdb_arch, duckdb_version, download_dir):
+    def include_files(self, build_data: dict[str, Any], duckdb_arch: str, duckdb_version: str, download_dir: Path) -> None:
         file_path = download_dir / duckdb_version / duckdb_arch
         alias = self.metadata.name.replace("-", "_").replace("duckdb_extension_", "")
         for file in file_path.glob(f"{alias}.duckdb_extension"):
@@ -141,7 +149,7 @@ class CustomBuildHook(BuildHookInterface):
             build_data["force_include"][file] = f"{root_name}/extensions/{duckdb_version}/{file.name}"
 
     @staticmethod
-    def add_tag(build_data, duckdb_arch):
+    def add_tag(build_data: dict[str, Any], duckdb_arch: str) -> None:
         if duckdb_arch == "linux_amd64":
             build_data["tag"] = "py3-none-manylinux2014_x86_64"
         elif duckdb_arch == "linux_arm64":
@@ -155,16 +163,15 @@ class CustomBuildHook(BuildHookInterface):
         else:
             raise Exception("Not supported platform")
 
-    def download_extensions(self, duckdb_arch, duckdb_version, download_dir):
-        """Downloads the extension from the DuckDB repo."""
-        import requests  # Import here to avoid module-level import before dependencies are installed
+    def download_extensions(self, duckdb_arch: str, duckdb_version: str, download_dir: Path) -> None:
+        import requests
 
         extension_name = self.metadata.config["tool"]["extension_builder"]["extension_name"]
         _validate_download_inputs(duckdb_arch, extension_name)
         allow_unverified = _allow_unverified_downloads()
-        checksums = _load_checksums_manifest()
+        checksums = _load_checksums_manifest(get_checksums_manifest_path(self.root))
 
-        download_dir.mkdir(parents=True, exist_ok=True)  # Ensure the download directory exists
+        download_dir.mkdir(parents=True, exist_ok=True)
         base_url = f"https://extensions.duckdb.org/{duckdb_version}"
         alias = self.metadata.name.replace("-", "_").replace("duckdb_extension_", "")
         url = f"{base_url}/{duckdb_arch}/{extension_name}.duckdb_extension.gz"
