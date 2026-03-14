@@ -1,0 +1,46 @@
+[project]
+name = "duckdb_extension_odbc"
+description = "Duckdb odbc extension"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+readme = "README.md"
+keywords = []
+authors = [
+    { name = "santosh", email = "void@some.where" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy", 
+    "License :: OSI Approved :: MIT License",
+]
+dependencies = [
+    "duckdb==1.5.0",
+]
+
+dynamic = ["version"]
+
+[project.urls]
+Documentation = "https://github.com/santosh-d3vpl3x/duckdb_extensions#readme"
+Issues = "https://github.com/santosh-d3vpl3x/duckdb_extensions/issues"
+Source = "https://github.com/santosh-d3vpl3x/duckdb_extensions"
+
+[build-system]
+requires = ["hatchling", "requests>=1.0.0", "duckdb"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "../../_version.py"
+
+[tool.hatch.build.targets.wheel.hooks.custom]
+path = "../../build_tools/hatch_duckdb_extension_build_tools/build_hook.py"
+require-runtime-dependencies = true
+
+[tool.extension_builder]
+extension_name = "odbc_scanner"
