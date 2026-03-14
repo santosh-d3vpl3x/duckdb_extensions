@@ -13,6 +13,7 @@ from hatchling.builders.hooks.plugin.interface import BuildHookInterface
 CHECKSUMS_MANIFEST_SCHEMA_VERSION = 1
 CHECKSUMS_MANIFEST_FILENAME = "extension_checksums.json"
 EXTENSION_NAME_PATTERN = re.compile(r"^[a-z0-9_]+$")
+DUCKDB_PIN_PATTERN = re.compile(r"^duckdb\s*==\s*(v?[A-Za-z0-9_.+-]+)$", re.IGNORECASE)
 SUPPORTED_ARCHITECTURES = frozenset({
     "linux_amd64",
     "linux_arm64",
@@ -52,6 +53,20 @@ def _validate_download_inputs(duckdb_arch: str, extension_name: str) -> None:
         raise ValueError(f"Unsupported architecture {duckdb_arch!r}. Expected one of {sorted(SUPPORTED_ARCHITECTURES)}.")
     if not EXTENSION_NAME_PATTERN.fullmatch(extension_name):
         raise ValueError(f"Invalid extension name {extension_name!r}. Expected pattern {EXTENSION_NAME_PATTERN.pattern!r}.")
+
+
+def _get_declared_duckdb_version(metadata_config: dict[str, Any], fallback_version: str) -> str:
+    project = metadata_config.get("project", {})
+    dependencies = project.get("dependencies", [])
+    if isinstance(dependencies, list):
+        for dependency in dependencies:
+            if not isinstance(dependency, str):
+                continue
+            match = DUCKDB_PIN_PATTERN.fullmatch(dependency.strip())
+            if match:
+                version = match.group(1)
+                return version if version.startswith("v") else f"v{version}"
+    return fallback_version
 
 
 def _load_checksums_manifest(path: Path) -> dict[str, Any]:
@@ -128,7 +143,8 @@ class DuckDBExtensionBuildHook(BuildHookInterface):
     def initialize(self, version: str, build_data: dict[str, Any]) -> None:
         import duckdb
 
-        duckdb_version = duckdb.sql("PRAGMA version;").fetchone()[0]
+        installed_duckdb_version = duckdb.sql("PRAGMA version;").fetchone()[0]
+        duckdb_version = _get_declared_duckdb_version(self.metadata.config, installed_duckdb_version)
         if version == "standard" and self.target_name == "wheel":
             duckdb_arch = pathlib.Path(self.directory).name
         else:

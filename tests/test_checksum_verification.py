@@ -167,6 +167,16 @@ def test_validate_download_inputs_rejects_invalid_extension_name():
         aef._validate_download_inputs("linux_amd64", "httpfs;rm -rf /")
 
 
+def test_get_declared_duckdb_version_prefers_exact_project_pin():
+    metadata_config = {"project": {"dependencies": ["click>=8.1", "duckdb==1.4.4"]}}
+    assert aef._get_declared_duckdb_version(metadata_config, "v1.5.0") == "v1.4.4"
+
+
+def test_get_declared_duckdb_version_falls_back_without_exact_pin():
+    metadata_config = {"project": {"dependencies": ["duckdb>=1.4.4"]}}
+    assert aef._get_declared_duckdb_version(metadata_config, "v1.5.0") == "v1.5.0"
+
+
 def test_allow_unverified_enabled_for_local(monkeypatch):
     monkeypatch.setenv(aef.ALLOW_UNVERIFIED_ENV, "1")
     monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
