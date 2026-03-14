@@ -8,7 +8,16 @@ import shutil
 from pathlib import Path
 from typing import Any
 
-from hatchling.builders.hooks.plugin.interface import BuildHookInterface
+try:
+    from hatchling.builders.hooks.plugin.interface import BuildHookInterface
+except ModuleNotFoundError as exc:
+    if exc.name != "hatchling":
+        raise
+
+    class BuildHookInterface:  # type: ignore[no-redef]
+        """Fallback base class so helper utilities stay importable outside Hatch."""
+
+        pass
 
 CHECKSUMS_MANIFEST_SCHEMA_VERSION = 1
 CHECKSUMS_MANIFEST_FILENAME = "extension_checksums.json"

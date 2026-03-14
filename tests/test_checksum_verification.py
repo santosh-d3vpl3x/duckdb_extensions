@@ -1,6 +1,7 @@
 import importlib
 import gzip
 import json
+import subprocess
 import sys
 import tempfile
 from pathlib import Path
@@ -281,3 +282,21 @@ def test_build_hook_package_imports_without_repo_root_on_sys_path(monkeypatch):
 
     assert module.DuckDBExtensionBuildHook.PLUGIN_NAME == "duckdb_extension"
     assert module.get_checksums_manifest_path("/tmp/project") == Path("/tmp/project").resolve() / "extension_checksums.json"
+
+
+def test_build_hook_package_imports_without_hatchling_installed():
+    script = f"""
+import sys
+sys.path.insert(0, {str(BUILD_TOOLS_SRC)!r})
+import duckdb_extension_build_tools.plugin as plugin
+print(plugin.DuckDBExtensionBuildHook.PLUGIN_NAME)
+"""
+    result = subprocess.run(
+        [sys.executable, "-S", "-c", script],
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.strip() == "duckdb_extension"
