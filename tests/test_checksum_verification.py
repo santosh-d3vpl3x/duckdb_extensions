@@ -1,11 +1,19 @@
+import importlib
 import gzip
 import json
+import subprocess
+import sys
 import tempfile
 from pathlib import Path
 
 import pytest
 
-import add_extension_files as aef
+REPO_ROOT = Path(__file__).resolve().parents[1]
+BUILD_TOOLS_SRC = REPO_ROOT / "build_tools" / "hatch_duckdb_extension_build_tools" / "src"
+if str(BUILD_TOOLS_SRC) not in sys.path:
+    sys.path.insert(0, str(BUILD_TOOLS_SRC))
+
+from duckdb_extension_build_tools import plugin as aef
 
 
 # --- Tests for _is_truthy ---
@@ -91,6 +99,18 @@ def test_load_checksums_manifest_returns_checksums_on_valid_file(tmp_path):
     assert result == expected_checksums
 
 
+def test_get_checksums_manifest_path_searches_parent_directories(tmp_path):
+    repo_root = tmp_path / "repo"
+    extension_root = repo_root / "extensions" / "duckdb_extension_httpfs"
+    extension_root.mkdir(parents=True)
+    manifest_path = repo_root / "extension_checksums.json"
+    manifest_path.write_text(json.dumps({"schema_version": 1, "checksums": {}}))
+
+    result = aef.get_checksums_manifest_path(extension_root)
+
+    assert result == manifest_path
+
+
 # --- Tests for _extract_gzip_to_file_with_sha256 ---
 
 
@@ -146,6 +166,16 @@ def test_validate_download_inputs_rejects_unsupported_architecture():
 def test_validate_download_inputs_rejects_invalid_extension_name():
     with pytest.raises(ValueError, match="Invalid extension name"):
         aef._validate_download_inputs("linux_amd64", "httpfs;rm -rf /")
+
+
+def test_get_declared_duckdb_version_prefers_exact_project_pin():
+    metadata_config = {"project": {"dependencies": ["click>=8.1", "duckdb==1.4.4"]}}
+    assert aef._get_declared_duckdb_version(metadata_config, "v1.5.0") == "v1.4.4"
+
+
+def test_get_declared_duckdb_version_falls_back_without_exact_pin():
+    metadata_config = {"project": {"dependencies": ["duckdb>=1.4.4"]}}
+    assert aef._get_declared_duckdb_version(metadata_config, "v1.5.0") == "v1.5.0"
 
 
 def test_allow_unverified_enabled_for_local(monkeypatch):
@@ -237,3 +267,36 @@ def test_verify_download_checksum_includes_sync_hint_on_mismatch():
             actual_sha256="a" * 64,
             allow_unverified=False,
         )
+
+
+def test_build_hook_package_imports_without_repo_root_on_sys_path(monkeypatch):
+    filtered_sys_path = [
+        entry for entry in sys.path
+        if Path(entry or ".").resolve() not in {REPO_ROOT, BUILD_TOOLS_SRC}
+    ]
+    monkeypatch.setattr(sys, "path", [str(BUILD_TOOLS_SRC), *filtered_sys_path])
+    monkeypatch.delitem(sys.modules, "duckdb_extension_build_tools", raising=False)
+    monkeypatch.delitem(sys.modules, "duckdb_extension_build_tools.plugin", raising=False)
+
+    module = importlib.import_module("duckdb_extension_build_tools.plugin")
+
+    assert module.DuckDBExtensionBuildHook.PLUGIN_NAME == "duckdb_extension"
+    assert module.get_checksums_manifest_path("/tmp/project") == Path("/tmp/project").resolve() / "extension_checksums.json"
+
+
+def test_build_hook_package_imports_without_hatchling_installed():
+    script = f"""
+import sys
+sys.path.insert(0, {str(BUILD_TOOLS_SRC)!r})
+import duckdb_extension_build_tools.plugin as plugin
+print(plugin.DuckDBExtensionBuildHook.PLUGIN_NAME)
+"""
+    result = subprocess.run(
+        [sys.executable, "-S", "-c", script],
+        capture_output=True,
+        text=True,
+        cwd=REPO_ROOT,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert result.stdout.strip() == "duckdb_extension"

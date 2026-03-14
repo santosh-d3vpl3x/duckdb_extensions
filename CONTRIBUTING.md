@@ -51,7 +51,7 @@ When DuckDB publishes a new release and you want this repository to match it:
    uv lock --upgrade-package duckdb
    uv sync
    ```
-3. Rebuild the wheels (at least once per architecture you can exercise locally) so `add_extension_files.py` downloads the new binaries.
+3. Rebuild the wheels (at least once per architecture you can exercise locally) so the packaged build hook downloads the new binaries.
 4. `bump-version` automatically runs checksum sync unless you pass `--skip-checksums` (for offline/emergency workflows). If skipped, run:
    ```bash
    python scripts/maintainer.py sync-checksums --duckdb-version <new_version>
