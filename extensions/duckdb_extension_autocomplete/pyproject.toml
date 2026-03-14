@@ -39,9 +39,8 @@ build-backend = "hatchling.build"
 path = "../../_version.py"
 
 [tool.hatch.build.targets.wheel.hooks.custom]
-path = "../../add_extension_files.py"
+path = "../../build_tools/hatch_duckdb_extension_build_tools/build_hook.py"
 require-runtime-dependencies = true
-dependencies = ["requests>=1.0.0", "duckdb"]
 
 [tool.extension_builder]
 extension_name = "autocomplete"
