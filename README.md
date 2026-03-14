@@ -31,6 +31,8 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 - [duckdb_extension_motherduck](extensions/duckdb_extension_motherduck)
 - [duckdb_extension_mysql](extensions/duckdb_extension_mysql)
 - [duckdb_extension_mysql_scanner](extensions/duckdb_extension_mysql_scanner)
+- [duckdb_extension_odbc](extensions/duckdb_extension_odbc)
+- [duckdb_extension_odbc_scanner](extensions/duckdb_extension_odbc_scanner)
 - [duckdb_extension_parquet](extensions/duckdb_extension_parquet)
 - [duckdb_extension_postgres](extensions/duckdb_extension_postgres)
 - [duckdb_extension_postgres_scanner](extensions/duckdb_extension_postgres_scanner)
