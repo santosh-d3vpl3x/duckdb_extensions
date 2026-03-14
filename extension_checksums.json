@@ -100,11 +100,11 @@
         "windows_amd64": "20fda06e1b9c4ab957314b25571cd45496d3f7b11d6d376d05a0b5f14cce51b5"
       },
       "motherduck": {
-        "linux_amd64": "8cf40ff4d273f05adbdd48018d867c88ec4cec7439cfe52e24e4bcfc7592f7d4",
-        "linux_arm64": "1833bb56a3f43d9a248beb2cefe3b87108a8a9a5f10c8cda5a4c4eac5690889c",
-        "osx_amd64": "b44bfb15d1aa5fe3cf5553c6a099e2be71291fcbe97159e60996f4a0603cf7d4",
-        "osx_arm64": "93493b2d6c63b0f512963f9f400d524c97e97e006b725a4b4ff663cf32bd297d",
-        "windows_amd64": "c1a620a2481bfa0a8e229908dbd05b7e20ee27ee27f668795c221ef46ee30c19"
+        "linux_amd64": "4e6a2bd02ba7e94cc6535e9ea559ca8cc45a9b1ced0a20bbaf1f094600130d2c",
+        "linux_arm64": "c3b9cc6c079e866728c8a8e645386958a2258f363061f02370d483c45f5d1c80",
+        "osx_amd64": "3ab0ac431da11d3dc7ac98e99a74c289dbb7f45025e644ea9f478301a00b71d7",
+        "osx_arm64": "6ddcb06bf50e9aee580e45435722047c67531ab723b8032463ae60d29ec3adaa",
+        "windows_amd64": "fedf84e534747c3ec83ffe07646cab8ae86c6f22088840bb83ccd5811623f25c"
       },
       "mysql_scanner": {
         "linux_amd64": "082d998e0cf2ddebf6a59cb1fb180b307ff4556c355b8da5afe483809b730e31",
