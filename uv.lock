@@ -21,6 +21,8 @@ members = [
     "duckdb-extension-motherduck",
     "duckdb-extension-mysql",
     "duckdb-extension-mysql-scanner",
+    "duckdb-extension-odbc",
+    "duckdb-extension-odbc-scanner",
     "duckdb-extension-parquet",
     "duckdb-extension-postgres",
     "duckdb-extension-postgres-scanner",
@@ -263,6 +265,26 @@ requires-dist = [{ name = "duckdb", specifier = "==1.5.0" }]
 [[package]]
 name = "duckdb-extension-mysql-scanner"
 source = { editable = "extensions/duckdb_extension_mysql_scanner" }
+dependencies = [
+    { name = "duckdb" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "duckdb", specifier = "==1.5.0" }]
+
+[[package]]
+name = "duckdb-extension-odbc"
+source = { editable = "extensions/duckdb_extension_odbc" }
+dependencies = [
+    { name = "duckdb" },
+]
+
+[package.metadata]
+requires-dist = [{ name = "duckdb", specifier = "==1.5.0" }]
+
+[[package]]
+name = "duckdb-extension-odbc-scanner"
+source = { editable = "extensions/duckdb_extension_odbc_scanner" }
 dependencies = [
     { name = "duckdb" },
 ]

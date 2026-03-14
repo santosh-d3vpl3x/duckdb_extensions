@@ -296,6 +296,13 @@
         "osx_arm64": "fd12b8387abbeb2cfbcff7e2eb13de8140eec88a1940a6b7dac2c339d8a81139",
         "windows_amd64": "035f33ad32374671b3b719078833049318d7630960620c0cdcedc299d2a3337f"
       },
+      "odbc_scanner": {
+        "linux_amd64": "8e62ed91f078c7e5151ebbccd252729c278b8cfa5dbe5aec4bdbf3da9035de53",
+        "linux_arm64": "4a92b3b880551fae5708ee05b0edbd9f04b04f956c28001d31ca68baaf734a82",
+        "osx_amd64": "af18bff903c33bf9cbe6e47ce319b292ff8d4a5ccdaecb2cfc479c8ee24c1ce6",
+        "osx_arm64": "491c1abe32c7fa91723f71f1ea57cea1f0b277bcfdbbeec5c29b080629a8f52c",
+        "windows_amd64": "d9915cb90187edf77a4e6cac20dacd7a0c11afecc24ab149e8c2240e285fd69b"
+      },
       "parquet": {
         "linux_amd64": "32f31d82f63122b3c0403d4b006c89b6808bef3b07cd496c84312e4986910876",
         "linux_arm64": "24374989c3a1743f0a5cae7124b085e4f7c7a9fe9031fcc5ec7761012e56310d",
