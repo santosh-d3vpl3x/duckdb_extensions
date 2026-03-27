@@ -29,6 +29,7 @@ jobs:
     uses: ./.github/workflows/_extension-publish.yml
     with:
       extension_name: lance
+      supported_platforms: '["osx_arm64","linux_amd64","linux_arm64","windows_amd64"]'  # osx_amd64 is not supported upstream yet
     secrets: inherit
 
   publish-to-pypi:
@@ -53,4 +54,3 @@ jobs:
           path: dist/
       - name: Publish distribution 📦 to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-
