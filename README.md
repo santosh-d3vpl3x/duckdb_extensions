@@ -55,7 +55,7 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 - `osx_amd64`
 - `windows_amd64`
 
-Compatible with `duckdb==1.5.1`
+Compatible with `duckdb==1.5.2`
 
 ## Release cadence
 This repository does not publish on every upstream DuckDB extension commit.

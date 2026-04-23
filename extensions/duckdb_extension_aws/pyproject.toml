@@ -21,7 +21,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
-    "duckdb==1.5.1",
+    "duckdb==1.5.2",
 ]
 
 dynamic = ["version"]
