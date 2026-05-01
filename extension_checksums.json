@@ -669,16 +669,17 @@
         "windows_amd64": "980150604721b4eba1d888f6119fdd47156ff80b1ad06aa9101b7ad58e48ab48"
       },
       "lance": {
-        "linux_amd64": "cf1d6ba68da1faa044f7ec08467fb5ca84c55212a37718206315e590831f5eae",
+        "linux_amd64": "eb302997d6726f6fc01599a81b5c0d5fd7cd5b85b96b88ab6b7fa5344b67c9e1",
         "linux_arm64": "517e730e59bf939874fa3cad9b6b7f9a91563e980ef6a19bd40345c4a4bae32b",
-        "osx_arm64": "fc97576a53cc406126138d98af3eb3c72b844b0add8c5ce7393cce04e26f7586"
+        "osx_arm64": "c31023d488a811f17653b4e6a923a6b47f5216ae61be9158eb97f4c1bb10b98a",
+        "windows_amd64": "f7158369b6ce299953de021cf1e7983a84b7fea21180a9567e5ae4df89073ce0"
       },
       "motherduck": {
-        "linux_amd64": "91efebca50c84579967a65de44d7f1436f37a24a90d7f530bd321ca5292cbea2",
-        "linux_arm64": "f48bdd25cf4fa94e303ea8f7e6ad659aaa4cee01ea923a93c2665b465f2c6371",
-        "osx_amd64": "cde1dcf04d9f24a1ee549894770a937180b2be170b0a35d06655be8545ad24e0",
-        "osx_arm64": "8ff06b80c9a2fda5943b6862f0f415c5c42e643d0499938f92fcfc77bf4a4d89",
-        "windows_amd64": "291d5c704111e2860c690ef93d45874d904f75fe13c5aa9ed1fca24d57a4f496"
+        "linux_amd64": "93e1b0e7ac2c2da890b02b8887c06ab8fa71acba174c09e9acce9b6a23f19dee",
+        "linux_arm64": "ccbfd062159cc7174e7e7da4aa4112ed314448ef684ce0622938f750d7e204ef",
+        "osx_amd64": "856b98f20864f080c5ce538ad7d4878c2ce5d76b84d4c819af997171894a2cad",
+        "osx_arm64": "6be6151df8db5a25e46a06c97c670a2660966e58b788ee2d7b596353bb278641",
+        "windows_amd64": "48bd8041e11cae903eb635b2bc99c1fa6526811a07f359e038609121fe003440"
       },
       "mysql_scanner": {
         "linux_amd64": "1d5574a154719a199d82ea759a1bbbe6cb553eb572f5213352b6750e9914b819",
