@@ -37,6 +37,7 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 - [duckdb_extension_parquet](extensions/duckdb_extension_parquet)
 - [duckdb_extension_postgres](extensions/duckdb_extension_postgres)
 - [duckdb_extension_postgres_scanner](extensions/duckdb_extension_postgres_scanner)
+- [duckdb_extension_quack](extensions/duckdb_extension_quack)
 - [duckdb_extension_spatial](extensions/duckdb_extension_spatial)
 - [duckdb_extension_sqlite3](extensions/duckdb_extension_sqlite3)
 - [duckdb_extension_sqlite](extensions/duckdb_extension_sqlite)
@@ -55,7 +56,7 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 - `osx_amd64`
 - `windows_amd64`
 
-Compatible with `duckdb==1.5.2`
+Compatible with `duckdb==1.5.3`
 
 ## Release cadence
 This repository does not publish on every upstream DuckDB extension commit.
