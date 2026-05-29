@@ -955,10 +955,10 @@
         "windows_amd64": "de0ad84b2cf5171cb340966db361d32a5c3578d3704dcb69227588ea0c41a181"
       },
       "vortex": {
-        "linux_amd64": "03f0eea70f7f165615783491dacafde8ba44c34ae6c0afa168c34d52852301d8",
-        "linux_arm64": "a09303aea7531d8c7ebac2f2976e634c96bfaccb3a71a7f4942b6c4a3e40acad",
-        "osx_amd64": "e42ff1eab6222f7e79a249b8caa960cfc3f2f9188f5a41faec7e540578cc3ae7",
-        "osx_arm64": "603c86c2705020bf04da95beae0815a725bcd04a927714097a25cf661d990a7f"
+        "linux_amd64": "4c64a2936fc99afecac16eec650ed2bf05d284724c8deeb860817845e4628a83",
+        "linux_arm64": "16fa9af605b4f30f681f64330e507c62285c6f58896a40a13119202f53d62937",
+        "osx_amd64": "071d02f2bf38b8043c0134aee95e0a44081351ba813f57dc422946f363ed59b4",
+        "osx_arm64": "f044598ae032c6fe625c4f67f4f3136396c74abb8b1fa9ab525e57f35f39d852"
       },
       "vss": {
         "linux_amd64": "0a776356c333442a99f11131c3eecb7557f650c80bb076595d6bc7ae9f216853",
