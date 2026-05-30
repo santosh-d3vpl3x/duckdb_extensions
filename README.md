@@ -62,7 +62,7 @@ Compatible with `duckdb==1.5.3`
 ## Project scope
 This repository deliberately packages DuckDB core extensions.
 
-It does not currently package community extensions or nightly-only extensions from other repositories (for example `https://community-extensions.duckdb.org`). That is a deliberate scope choice: core extensions are maintained by DuckDB Labs and come with a different trust model than third-party/community extensions, and this repository does not want to take on the additional supply chain and vendor assessment burden of packaging and redistributing community-maintained or unstable moving targets.
+It does not currently package community extensions or nightly-only extensions from other repositories (for example `https://community-extensions.duckdb.org`). That is a deliberate scope choice: core extensions are maintained by DuckDB Labs and come with a different trust model than third-party/community extensions, and packaging and redistributing community-maintained or unstable moving targets would require accepting additional supply chain risk and per-extension vendor assessment.
 
 ## Release cadence
 This repository does not publish on every upstream DuckDB extension commit.
