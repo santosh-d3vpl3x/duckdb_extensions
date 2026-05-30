@@ -1,5 +1,5 @@
 # pip installable DuckDB extensions
-pip installable duckdb core extensions so you don't have to leave your python ecosystem behind.
+pip installable DuckDB core extensions, so you don't have to leave your Python ecosystem behind.
 
 [![PyPI - Version](https://img.shields.io/pypi/v/duckdb-extensions.svg)](https://pypi.org/project/duckdb-extensions)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckdb-extensions.svg)](https://pypi.org/project/duckdb-extensions)
@@ -9,6 +9,7 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 ## Table of Contents
 
 - [Installation](#installation)
+- [Project scope](#project-scope)
 - [Release cadence](#release-cadence)
 - [Artifact integrity checks](#artifact-integrity-checks)
 - [Licensing](#licensing)
@@ -57,6 +58,11 @@ pip installable duckdb core extensions so you don't have to leave your python ec
 - `windows_amd64`
 
 Compatible with `duckdb==1.5.3`
+
+## Project scope
+This repository deliberately packages DuckDB core extensions.
+
+It does not currently package community extensions or nightly-only extensions from other repositories (for example `https://community-extensions.duckdb.org`). That is a deliberate scope choice: core extensions are maintained by DuckDB Labs and come with a different trust model than third-party/community extensions, and packaging and redistributing community-maintained or unstable moving targets would require accepting additional supply chain risk and per-extension vendor assessment.
 
 ## Release cadence
 This repository does not publish on every upstream DuckDB extension commit.
