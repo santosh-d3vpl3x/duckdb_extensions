@@ -21,7 +21,7 @@ classifiers = [
     "License :: Other/Proprietary License",
 ]
 dependencies = [
-    "duckdb==1.5.3",
+    "duckdb==1.5.4",
 ]
 
 dynamic = ["version"]

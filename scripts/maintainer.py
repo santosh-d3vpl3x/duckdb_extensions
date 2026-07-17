@@ -473,7 +473,9 @@ def bump_version(new_version: str, dry_run: bool, skip_checksums: bool) -> None:
     else:
         click.echo()
         click.echo("Syncing extension checksums...")
-        sync_checksums_cmd(
+        # Invoke the underlying callback directly: after Click decorates the
+        # function, calling the Command object treats these as Context kwargs.
+        sync_checksums_cmd.callback(
             duckdb_version=normalized_version,
             extensions="all",
             architectures=",".join(DEFAULT_ARCHITECTURES),
