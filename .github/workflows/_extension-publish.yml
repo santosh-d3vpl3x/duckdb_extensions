@@ -120,6 +120,8 @@ jobs:
           EXTENSION_NAME: ${{ inputs.extension_name }}
         run: |
           uv sync --verbose
-          uv pip install pytest
+          # The maintainer regression tests import Click from the optional
+          # maintainer dependency set.
+          uv pip install pytest '.[maintainer]'
           uv pip install --no-index --find-links dist --verbose duckdb-extension-${{ inputs.extension_name }}
           uv run pytest
