@@ -11,7 +11,6 @@ authors = [
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -22,12 +21,47 @@ classifiers = [
 ]
 dependencies = [
     "duckdb==1.5.4",
-    "importlib-resources>=3.0.0;python_version<'3.9'",
 ]
 dynamic = ["version"]
 
 [project.optional-dependencies]
 maintainer = ["click>=8.1"]
+all = [
+    "duckdb_extension_autocomplete",
+    "duckdb_extension_avro",
+    "duckdb_extension_aws",
+    "duckdb_extension_azure",
+    "duckdb_extension_delta",
+    "duckdb_extension_ducklake",
+    "duckdb_extension_encodings",
+    "duckdb_extension_excel",
+    "duckdb_extension_fts",
+    "duckdb_extension_httpfs",
+    "duckdb_extension_iceberg",
+    "duckdb_extension_icu",
+    "duckdb_extension_inet",
+    "duckdb_extension_json",
+    "duckdb_extension_lance",
+    "duckdb_extension_motherduck",
+    "duckdb_extension_mysql",
+    "duckdb_extension_mysql_scanner",
+    "duckdb_extension_odbc",
+    "duckdb_extension_odbc_scanner",
+    "duckdb_extension_parquet",
+    "duckdb_extension_postgres",
+    "duckdb_extension_postgres_scanner",
+    "duckdb_extension_quack",
+    "duckdb_extension_spatial",
+    "duckdb_extension_sqlite",
+    "duckdb_extension_sqlite3",
+    "duckdb_extension_sqlite_scanner",
+    "duckdb_extension_tpcds",
+    "duckdb_extension_tpch",
+    "duckdb_extension_ui",
+    "duckdb_extension_unity_catalog",
+    "duckdb_extension_vortex",
+    "duckdb_extension_vss",
+]
 
 [project.urls]
 Documentation = "https://github.com/santosh-d3vpl3x/duckdb_extensions#readme"
@@ -43,6 +77,42 @@ path = "_version.py"
 
 [tool.uv.workspace]
 members = ["extensions/*"]
+
+[tool.uv.sources]
+duckdb-extension-autocomplete = { workspace = true }
+duckdb-extension-avro = { workspace = true }
+duckdb-extension-aws = { workspace = true }
+duckdb-extension-azure = { workspace = true }
+duckdb-extension-delta = { workspace = true }
+duckdb-extension-ducklake = { workspace = true }
+duckdb-extension-encodings = { workspace = true }
+duckdb-extension-excel = { workspace = true }
+duckdb-extension-fts = { workspace = true }
+duckdb-extension-httpfs = { workspace = true }
+duckdb-extension-iceberg = { workspace = true }
+duckdb-extension-icu = { workspace = true }
+duckdb-extension-inet = { workspace = true }
+duckdb-extension-json = { workspace = true }
+duckdb-extension-lance = { workspace = true }
+duckdb-extension-motherduck = { workspace = true }
+duckdb-extension-mysql = { workspace = true }
+duckdb-extension-mysql-scanner = { workspace = true }
+duckdb-extension-odbc = { workspace = true }
+duckdb-extension-odbc-scanner = { workspace = true }
+duckdb-extension-parquet = { workspace = true }
+duckdb-extension-postgres = { workspace = true }
+duckdb-extension-postgres-scanner = { workspace = true }
+duckdb-extension-quack = { workspace = true }
+duckdb-extension-spatial = { workspace = true }
+duckdb-extension-sqlite = { workspace = true }
+duckdb-extension-sqlite-scanner = { workspace = true }
+duckdb-extension-sqlite3 = { workspace = true }
+duckdb-extension-tpcds = { workspace = true }
+duckdb-extension-tpch = { workspace = true }
+duckdb-extension-ui = { workspace = true }
+duckdb-extension-unity-catalog = { workspace = true }
+duckdb-extension-vortex = { workspace = true }
+duckdb-extension-vss = { workspace = true }
 
 [tool.hatch.envs.default]
 installer = "uv"

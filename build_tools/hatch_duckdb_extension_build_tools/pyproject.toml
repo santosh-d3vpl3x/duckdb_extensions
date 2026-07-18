@@ -2,7 +2,7 @@
 name = "hatch-duckdb-extension-build-tools"
 version = "0.1.0"
 description = "Hatchling build hook plugin for DuckDB extension wheels"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [
     { name = "santosh", email = "void@some.where" },

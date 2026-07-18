@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.10"
 
 [manifest]
@@ -452,6 +452,42 @@ dependencies = [
 ]
 
 [package.optional-dependencies]
+all = [
+    { name = "duckdb-extension-autocomplete" },
+    { name = "duckdb-extension-avro" },
+    { name = "duckdb-extension-aws" },
+    { name = "duckdb-extension-azure" },
+    { name = "duckdb-extension-delta" },
+    { name = "duckdb-extension-ducklake" },
+    { name = "duckdb-extension-encodings" },
+    { name = "duckdb-extension-excel" },
+    { name = "duckdb-extension-fts" },
+    { name = "duckdb-extension-httpfs" },
+    { name = "duckdb-extension-iceberg" },
+    { name = "duckdb-extension-icu" },
+    { name = "duckdb-extension-inet" },
+    { name = "duckdb-extension-json" },
+    { name = "duckdb-extension-lance" },
+    { name = "duckdb-extension-motherduck" },
+    { name = "duckdb-extension-mysql" },
+    { name = "duckdb-extension-mysql-scanner" },
+    { name = "duckdb-extension-odbc" },
+    { name = "duckdb-extension-odbc-scanner" },
+    { name = "duckdb-extension-parquet" },
+    { name = "duckdb-extension-postgres" },
+    { name = "duckdb-extension-postgres-scanner" },
+    { name = "duckdb-extension-quack" },
+    { name = "duckdb-extension-spatial" },
+    { name = "duckdb-extension-sqlite" },
+    { name = "duckdb-extension-sqlite-scanner" },
+    { name = "duckdb-extension-sqlite3" },
+    { name = "duckdb-extension-tpcds" },
+    { name = "duckdb-extension-tpch" },
+    { name = "duckdb-extension-ui" },
+    { name = "duckdb-extension-unity-catalog" },
+    { name = "duckdb-extension-vortex" },
+    { name = "duckdb-extension-vss" },
+]
 maintainer = [
     { name = "click" },
 ]
@@ -460,6 +496,39 @@ maintainer = [
 requires-dist = [
     { name = "click", marker = "extra == 'maintainer'", specifier = ">=8.1" },
     { name = "duckdb", specifier = "==1.5.4" },
-    { name = "importlib-resources", marker = "python_full_version < '3.9'", specifier = ">=3.0.0" },
+    { name = "duckdb-extension-autocomplete", marker = "extra == 'all'", editable = "extensions/duckdb_extension_autocomplete" },
+    { name = "duckdb-extension-avro", marker = "extra == 'all'", editable = "extensions/duckdb_extension_avro" },
+    { name = "duckdb-extension-aws", marker = "extra == 'all'", editable = "extensions/duckdb_extension_aws" },
+    { name = "duckdb-extension-azure", marker = "extra == 'all'", editable = "extensions/duckdb_extension_azure" },
+    { name = "duckdb-extension-delta", marker = "extra == 'all'", editable = "extensions/duckdb_extension_delta" },
+    { name = "duckdb-extension-ducklake", marker = "extra == 'all'", editable = "extensions/duckdb_extension_ducklake" },
+    { name = "duckdb-extension-encodings", marker = "extra == 'all'", editable = "extensions/duckdb_extension_encodings" },
+    { name = "duckdb-extension-excel", marker = "extra == 'all'", editable = "extensions/duckdb_extension_excel" },
+    { name = "duckdb-extension-fts", marker = "extra == 'all'", editable = "extensions/duckdb_extension_fts" },
+    { name = "duckdb-extension-httpfs", marker = "extra == 'all'", editable = "extensions/duckdb_extension_httpfs" },
+    { name = "duckdb-extension-iceberg", marker = "extra == 'all'", editable = "extensions/duckdb_extension_iceberg" },
+    { name = "duckdb-extension-icu", marker = "extra == 'all'", editable = "extensions/duckdb_extension_icu" },
+    { name = "duckdb-extension-inet", marker = "extra == 'all'", editable = "extensions/duckdb_extension_inet" },
+    { name = "duckdb-extension-json", marker = "extra == 'all'", editable = "extensions/duckdb_extension_json" },
+    { name = "duckdb-extension-lance", marker = "extra == 'all'", editable = "extensions/duckdb_extension_lance" },
+    { name = "duckdb-extension-motherduck", marker = "extra == 'all'", editable = "extensions/duckdb_extension_motherduck" },
+    { name = "duckdb-extension-mysql", marker = "extra == 'all'", editable = "extensions/duckdb_extension_mysql" },
+    { name = "duckdb-extension-mysql-scanner", marker = "extra == 'all'", editable = "extensions/duckdb_extension_mysql_scanner" },
+    { name = "duckdb-extension-odbc", marker = "extra == 'all'", editable = "extensions/duckdb_extension_odbc" },
+    { name = "duckdb-extension-odbc-scanner", marker = "extra == 'all'", editable = "extensions/duckdb_extension_odbc_scanner" },
+    { name = "duckdb-extension-parquet", marker = "extra == 'all'", editable = "extensions/duckdb_extension_parquet" },
+    { name = "duckdb-extension-postgres", marker = "extra == 'all'", editable = "extensions/duckdb_extension_postgres" },
+    { name = "duckdb-extension-postgres-scanner", marker = "extra == 'all'", editable = "extensions/duckdb_extension_postgres_scanner" },
+    { name = "duckdb-extension-quack", marker = "extra == 'all'", editable = "extensions/duckdb_extension_quack" },
+    { name = "duckdb-extension-spatial", marker = "extra == 'all'", editable = "extensions/duckdb_extension_spatial" },
+    { name = "duckdb-extension-sqlite", marker = "extra == 'all'", editable = "extensions/duckdb_extension_sqlite" },
+    { name = "duckdb-extension-sqlite-scanner", marker = "extra == 'all'", editable = "extensions/duckdb_extension_sqlite_scanner" },
+    { name = "duckdb-extension-sqlite3", marker = "extra == 'all'", editable = "extensions/duckdb_extension_sqlite3" },
+    { name = "duckdb-extension-tpcds", marker = "extra == 'all'", editable = "extensions/duckdb_extension_tpcds" },
+    { name = "duckdb-extension-tpch", marker = "extra == 'all'", editable = "extensions/duckdb_extension_tpch" },
+    { name = "duckdb-extension-ui", marker = "extra == 'all'", editable = "extensions/duckdb_extension_ui" },
+    { name = "duckdb-extension-unity-catalog", marker = "extra == 'all'", editable = "extensions/duckdb_extension_unity_catalog" },
+    { name = "duckdb-extension-vortex", marker = "extra == 'all'", editable = "extensions/duckdb_extension_vortex" },
+    { name = "duckdb-extension-vss", marker = "extra == 'all'", editable = "extensions/duckdb_extension_vss" },
 ]
-provides-extras = ["maintainer"]
+provides-extras = ["all", "maintainer"]
