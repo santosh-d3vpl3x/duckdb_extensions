@@ -530,6 +530,5 @@ requires-dist = [
     { name = "duckdb-extension-unity-catalog", marker = "extra == 'all'", editable = "extensions/duckdb_extension_unity_catalog" },
     { name = "duckdb-extension-vortex", marker = "extra == 'all'", editable = "extensions/duckdb_extension_vortex" },
     { name = "duckdb-extension-vss", marker = "extra == 'all'", editable = "extensions/duckdb_extension_vss" },
-    { name = "importlib-resources", marker = "python_full_version < '3.9'", specifier = ">=3.0.0" },
 ]
 provides-extras = ["all", "maintainer"]

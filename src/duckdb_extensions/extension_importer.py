@@ -1,15 +1,10 @@
 import importlib
+import importlib.resources
 import pathlib
 from typing import Optional
 
 import duckdb
 from duckdb import DuckDBPyConnection
-
-try:
-    # Python < 3.9
-    import importlib_resources as ilr
-except ImportError:
-    import importlib.resources as ilr
 
 
 def import_extension(name: str, force_install: bool = False, con: Optional[DuckDBPyConnection] = None):
@@ -20,7 +15,7 @@ def import_extension(name: str, force_install: bool = False, con: Optional[DuckD
         con = duckdb.default_connection()
 
     quack_module = importlib.import_module(f"duckdb_extension_{name}")
-    module_path = pathlib.Path(str(ilr.files(quack_module)))
+    module_path = pathlib.Path(str(importlib.resources.files(quack_module)))
 
     version_row = con.sql("PRAGMA version;").fetchone()
     if version_row is None:

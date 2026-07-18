@@ -11,7 +11,6 @@ authors = [
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -22,7 +21,6 @@ classifiers = [
 ]
 dependencies = [
     "duckdb==1.5.4",
-    "importlib-resources>=3.0.0;python_version<'3.9'",
 ]
 dynamic = ["version"]
 
