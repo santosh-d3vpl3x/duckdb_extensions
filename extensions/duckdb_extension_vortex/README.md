@@ -32,7 +32,7 @@ print(
                 FROM duckdb_extensions() where 
                 extension_name='vortex' or 
                 list_contains(aliases, 'vortex')""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 

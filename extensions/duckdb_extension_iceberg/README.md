@@ -30,7 +30,7 @@ print(
                 FROM duckdb_extensions() where 
                 extension_name='iceberg' or 
                 list_contains(aliases, 'iceberg')""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 

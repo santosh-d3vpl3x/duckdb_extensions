@@ -152,12 +152,12 @@ class DuckDBExtensionBuildHook(BuildHookInterface):
     def initialize(self, version: str, build_data: dict[str, Any]) -> None:
         import duckdb
 
-        installed_duckdb_version = duckdb.sql("PRAGMA version;").fetchone()[0]
+        installed_duckdb_version = duckdb.sql("PRAGMA version;").fetchall()[0][0]
         duckdb_version = _get_declared_duckdb_version(self.metadata.config, installed_duckdb_version)
         if version == "standard" and self.target_name == "wheel":
             duckdb_arch = pathlib.Path(self.directory).name
         else:
-            duckdb_arch = duckdb.sql("PRAGMA platform;").fetchone()[0]
+            duckdb_arch = duckdb.sql("PRAGMA platform;").fetchall()[0][0]
 
         root_name = self.metadata.name.replace("-", "_")
         download_dir = Path(self.root) / "src" / root_name / "extensions"

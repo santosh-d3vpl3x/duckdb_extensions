@@ -30,7 +30,7 @@ print(
                 FROM duckdb_extensions() where 
                 extension_name='{@cookiecutter.extension_name@}' or 
                 list_contains(aliases, '{@cookiecutter.extension_name@}')""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 

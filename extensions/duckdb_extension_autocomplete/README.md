@@ -30,7 +30,7 @@ print(
                 FROM duckdb_extensions() where 
                 extension_name='autocomplete' or 
                 list_contains(aliases, 'autocomplete')""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 

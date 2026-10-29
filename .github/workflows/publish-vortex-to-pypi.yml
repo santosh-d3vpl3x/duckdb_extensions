@@ -29,7 +29,7 @@ jobs:
     uses: ./.github/workflows/_extension-publish.yml
     with:
       extension_name: vortex
-      supported_platforms: '["osx_arm64","linux_amd64","linux_arm64","osx_amd64"]'  # windows_amd64 is not supported yet
+      supported_platforms: '["osx_arm64","linux_amd64","linux_arm64"]'  # osx_amd64 and windows_amd64 are unavailable for DuckDB 2.0.0
     secrets: inherit
 
   publish-to-pypi:

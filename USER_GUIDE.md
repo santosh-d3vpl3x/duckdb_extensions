@@ -51,7 +51,7 @@ duckdb.sql("""
     SELECT installed
     FROM duckdb_extensions()
     WHERE extension_name = 'httpfs' OR list_contains(aliases, 'httpfs')
-""").fetchone()
+""").fetchall()[0]
 ```
 
 ## Managing Multiple Extensions

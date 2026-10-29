@@ -1,7 +1,7 @@
 [project]
 name = "duckdb_extension_azure"
 description = "Duckdb azure extension"
-requires-python = ">=3.9"
+requires-python = ">=3.11"
 license = {text = "MIT"}
 readme = "README.md"
 keywords = []
@@ -11,8 +11,6 @@ authors = [
 classifiers = [
     "Development Status :: 4 - Beta",
     "Programming Language :: Python",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
@@ -21,7 +19,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
 ]
 dependencies = [
-    "duckdb==1.5.5",
+    "duckdb==2.0.0",
 ]
 
 dynamic = ["version"]

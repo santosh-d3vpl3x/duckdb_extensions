@@ -30,7 +30,7 @@ print(
                 FROM duckdb_extensions() where 
                 extension_name='json' or 
                 list_contains(aliases, 'json')""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 

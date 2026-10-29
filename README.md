@@ -30,6 +30,7 @@ pip installable DuckDB core extensions, so you don't have to leave your Python e
 - [duckdb_extension_inet](extensions/duckdb_extension_inet)
 - [duckdb_extension_json](extensions/duckdb_extension_json)
 - [duckdb_extension_lance](extensions/duckdb_extension_lance)
+- [duckdb_extension_legacy_parser](extensions/duckdb_extension_legacy_parser)
 - [duckdb_extension_motherduck](extensions/duckdb_extension_motherduck)
 - [duckdb_extension_mysql](extensions/duckdb_extension_mysql)
 - [duckdb_extension_mysql_scanner](extensions/duckdb_extension_mysql_scanner)
@@ -57,7 +58,13 @@ pip installable DuckDB core extensions, so you don't have to leave your Python e
 - `osx_amd64`
 - `windows_amd64`
 
-Compatible with `duckdb==1.5.5`
+Compatible with `duckdb==2.0.0` (Python 3.11+).
+
+Platform exceptions: `lance` and `ui` have no Intel macOS artifacts; `vortex` has neither Intel macOS nor Windows artifacts for DuckDB 2.0.0.
+
+See the [DuckDB 2.0.0 investigation](docs/duckdb-2.0.0-investigation.md) for compatibility findings and validation.
+
+The core `legacy_parser` extension is included. The documented `sirius` extension is marked “coming soon” upstream and is not packaged.
 
 ## Project scope
 This repository deliberately packages DuckDB core extensions.
@@ -104,7 +111,7 @@ import duckdb
 print(
     duckdb.sql("""SELECT installed
                 FROM duckdb_extensions() where extension_name='httpfs'""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 

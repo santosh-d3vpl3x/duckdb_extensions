@@ -28,7 +28,7 @@ import duckdb
 print(
     duckdb.sql("""SELECT installed
                 FROM duckdb_extensions() where extension_name='parquet'""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 

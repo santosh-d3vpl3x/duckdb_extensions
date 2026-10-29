@@ -30,7 +30,7 @@ print(
                 FROM duckdb_extensions() where 
                 extension_name='excel' or 
                 list_contains(aliases, 'excel')""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 

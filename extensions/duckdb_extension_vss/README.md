@@ -30,7 +30,7 @@ print(
                 FROM duckdb_extensions() where 
                 extension_name='vss' or 
                 list_contains(aliases, 'vss')""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 

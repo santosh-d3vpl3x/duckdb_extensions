@@ -30,7 +30,7 @@ print(
                 FROM duckdb_extensions() where 
                 extension_name='tpcds' or 
                 list_contains(aliases, 'tpcds')""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 
