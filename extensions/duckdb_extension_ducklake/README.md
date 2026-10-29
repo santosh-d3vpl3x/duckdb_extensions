@@ -30,7 +30,7 @@ print(
                 FROM duckdb_extensions() where 
                 extension_name='ducklake' or 
                 list_contains(aliases, 'ducklake')""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 

@@ -30,7 +30,7 @@ print(
                 FROM duckdb_extensions() where 
                 extension_name='sqlite' or 
                 list_contains(aliases, 'sqlite')""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 

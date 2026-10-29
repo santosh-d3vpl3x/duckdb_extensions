@@ -29,6 +29,7 @@ jobs:
     uses: ./.github/workflows/_extension-publish.yml
     with:
       extension_name: ui
+      supported_platforms: '["osx_arm64","linux_amd64","linux_arm64","windows_amd64"]'  # osx_amd64 unavailable upstream
     secrets: inherit
 
   publish-to-pypi:

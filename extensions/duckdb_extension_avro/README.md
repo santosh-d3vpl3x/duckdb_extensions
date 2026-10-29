@@ -30,7 +30,7 @@ print(
                 FROM duckdb_extensions() where 
                 extension_name='avro' or 
                 list_contains(aliases, 'avro')""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 

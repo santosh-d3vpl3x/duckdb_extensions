@@ -30,7 +30,7 @@ print(
                 FROM duckdb_extensions() where 
                 extension_name='mysql' or 
                 list_contains(aliases, 'mysql')""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 

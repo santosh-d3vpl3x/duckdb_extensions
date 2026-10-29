@@ -14,7 +14,7 @@ def test_extensions():
         duckdb.sql(f"""SELECT count(*)
                 FROM duckdb_extensions() where
                 (extension_name = '{extension}' or  list_contains(aliases, '{extension}'))
-                AND installed=true""").fetchone()[0]
+                AND installed=true""").fetchall()[0][0]
         == 1
     )
     logging.getLogger().info(f"duckdb {extension=!r} installed")

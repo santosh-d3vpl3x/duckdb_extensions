@@ -30,7 +30,7 @@ print(
                 FROM duckdb_extensions() where 
                 extension_name='aws' or 
                 list_contains(aliases, 'aws')""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 

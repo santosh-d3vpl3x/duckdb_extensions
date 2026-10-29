@@ -30,7 +30,7 @@ print(
                 FROM duckdb_extensions() where 
                 extension_name='odbc_scanner' or 
                 list_contains(aliases, 'odbc_scanner')""")
-    .fetchone()[0]
+    .fetchall()[0][0]
 )
 ```
 
